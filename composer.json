@@ -1,0 +1,13 @@
+{
+    "name": "phpeter/pitoufw",
+    "authors": [
+        {
+            "name": "PHPeter",
+            "email": "phpeter@phpeter.fr"
+        }
+    ],
+  "require": {
+    "ext-json": "*",
+    "ext-pdo": "*"
+  }
+}
