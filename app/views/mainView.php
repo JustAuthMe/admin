@@ -1,6 +1,7 @@
 <?php
 
-use PitouFW\Core\Request;
+use PitouFW\Core\Alert;
+use PitouFW\Core\Request as R;
 use PitouFW\Model\AdminUser;
 
 ?>
@@ -22,6 +23,17 @@ use PitouFW\Model\AdminUser;
     <!-- Custom styles for this template-->
     <link href="<?= ASSETS ?>css/sb-admin-2.min.css" rel="stylesheet">
 
+    <!-- Bootstrap core JavaScript-->
+    <script src="<?= ASSETS ?>vendor/jquery/jquery.min.js"></script>
+    <script src="<?= ASSETS ?>vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="<?= ASSETS ?>vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="<?= ASSETS ?>vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="<?= ASSETS ?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
 </head>
 
 <body id="page-top">
@@ -34,14 +46,14 @@ use PitouFW\Model\AdminUser;
 
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-            <img src="<?= IMG ?>logo_big.png" width="70%" />
+            <img src="<?= IMG ?>logo_big.png" width="75%" />
         </a>
 
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item <?= Request::get()->getArg(0) === 'home' ? 'active' : '' ?>">
+        <li class="nav-item <?= R::r('home') ? 'active' : '' ?>">
             <a class="nav-link" href="<?= WEBROOT ?>">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
@@ -54,53 +66,57 @@ use PitouFW\Model\AdminUser;
         </div> -->
 
         <!-- Nav Item - Utilities Collapse Menu -->
-        <li class="nav-item <?= Request::get()->getArg(0) === 'core' ? 'active' : '' ?>">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        <li class="nav-item <?= R::r('core') ? 'active' : '' ?>">
+            <a class="nav-link <?= !R::r('core') ? 'collapsed' : '' ?>" href="#" data-toggle="collapse" data-target="#collapseOne"
+               aria-expanded="<?= R::r('core') ? 'true' : 'false' ?>" aria-controls="collapseOne">
                 <i class="fas fa-fw fa-cogs"></i>
                 <span>Core backend</span>
             </a>
-            <div id="collapseOne" class="collapse" data-parent="#accordionSidebar">
+            <div id="collapseOne" class="collapse <?= R::r('core') ? 'show' : '' ?>" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="#">Users</a>
-                    <a class="collapse-item" href="#">Apps</a>
+                    <a class="collapse-item <?= R::r('core/users') ? 'active' : '' ?>" href="<?= WEBROOT ?>core/users">Users</a>
+                    <a class="collapse-item <?= R::r('core/apps') ? 'active' : '' ?>" href="<?= WEBROOT ?>core/apps">Apps</a>
                 </div>
             </div>
         </li>
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item <?= Request::get()->getArg(0) === 'console' ? 'active' : '' ?>">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <li class="nav-item <?= R::r('console') ? 'active' : '' ?>">
+            <a class="nav-link <?= !R::r('console') ? 'collapsed' : '' ?>" href="#" data-toggle="collapse" data-target="#collapseTwo"
+               aria-expanded="<?= R::r('console') ? 'true' : 'false' ?>" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-code"></i>
                 <span>Developers console</span>
             </a>
-            <div id="collapseTwo" class="collapse" data-parent="#accordionSidebar">
+            <div id="collapseTwo" class="collapse <?= R::r('console') ? 'show' : '' ?>" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="#">Users</a>
-                    <a class="collapse-item" href="#">Teams</a>
+                    <a class="collapse-item <?= R::r('console/users') ? 'active' : '' ?>" href="<?= WEBROOT ?>console/users">Users</a>
+                    <a class="collapse-item <?= R::r('console/teams') ? 'active' : '' ?>" href="<?= WEBROOT ?>console/teams">Teams</a>
+                    <a class="collapse-item <?= R::r('console/invitations') ? 'active' : '' ?>" href="<?= WEBROOT ?>console/invitations">Invitations</a>
                 </div>
             </div>
         </li>
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item <?= Request::get()->getArg(0) === 'website' ? 'active' : '' ?>">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+        <li class="nav-item <?= R::r('website') ? 'active' : '' ?>">
+            <a class="nav-link <?= !R::r('website') ? 'collapsed' : '' ?>" href="#" data-toggle="collapse" data-target="#collapseThree"
+               aria-expanded="<?= R::r('website') ? 'true' : 'false' ?>>" aria-controls="collapseThree">
                 <i class="fas fa-fw fa-image"></i>
                 <span>Commercial website</span>
             </a>
-            <div id="collapseThree" class="collapse" data-parent="#accordionSidebar">
+            <div id="collapseThree" class="collapse <?= R::r('website') ? 'show' : '' ?>" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="#">Price plans</a>
-                    <a class="collapse-item" href="#">Static pages</a>
-                    <a class="collapse-item" href="#">Settings</a>
+                    <a class="collapse-item <?= R::r('website/pricing') ? 'active' : '' ?>" href="<?= WEBROOT ?>website/pricing">Price plans</a>
+                    <a class="collapse-item <?= R::r('website/pages') ? 'active' : '' ?>" href="<?= WEBROOT ?>website/pages">Static pages</a>
+                    <a class="collapse-item <?= R::r('website/settings') ? 'active' : '' ?>" href="<?= WEBROOT ?>website/settings">Settings</a>
                 </div>
             </div>
         </li>
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item <?= Request::get()->getArg(0) === 'support' ? 'active' : '' ?>">
-            <a class="nav-link collapsed" href="#">
+        <li class="nav-item <?= R::r('support') ? 'active' : '' ?>">
+            <a class="nav-link" href="<?= WEBROOT ?>support">
                 <i class="fas fa-fw fa-hands-helping"></i>
-                <span>Support tickets</span>
+                <span>Support</span>
             </a>
         </li>
 
@@ -108,16 +124,18 @@ use PitouFW\Model\AdminUser;
         <hr class="sidebar-divider">
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item <?= Request::get()->getArg(0) === 'website' ? 'active' : '' ?>">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+        <li class="nav-item <?= R::r('admin') ? 'active' : '' ?>">
+            <a class="nav-link <?= !R::r('admin') ? 'collapsed' : '' ?>" href="#" data-toggle="collapse" data-target="#collapseFour"
+               aria-expanded="<?= R::r('admin') ? 'ture' : 'false' ?>" aria-controls="collapseFour">
                 <i class="fas fa-fw fa-wrench"></i>
-                <span>Settings</span>
+                <span>Admin panel</span>
             </a>
-            <div id="collapseFour" class="collapse" data-parent="#accordionSidebar">
+            <div id="collapseFour" class="collapse <?= R::r('admin') ? 'show' : '' ?>" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="#">Users</a>
-                    <a class="collapse-item" href="#">Roles</a>
-                    <a class="collapse-item" href="#">Invitations</a>
+                    <a class="collapse-item <?= R::r('admin/users') ? 'active' : '' ?>" href="<?= WEBROOT ?>admin/users">Users</a>
+                    <a class="collapse-item <?= R::r('admin/roles') ? 'active' : '' ?>" href="<?= WEBROOT ?>admin/roles">Roles</a>
+                    <a class="collapse-item <?= R::r('admin/permissions') ? 'active' : '' ?>" href="<?= WEBROOT ?>admin/permissions">Permissions</a>
+                    <a class="collapse-item <?= R::r('admin/invitations') ? 'active' : '' ?>" href="<?= WEBROOT ?>admin/invitations">Invitations</a>
                 </div>
             </div>
         </li>
@@ -273,11 +291,13 @@ use PitouFW\Model\AdminUser;
             <div class="container-fluid">
 
                 <!-- Page Heading -->
+                <?php if (isset($TITLE)): ?>
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800"><?= $TITLE ?? 'Dashboard' ?></h1>
+                    <h1 class="h3 mb-0 text-gray-800"><?= $TITLE  ?></h1>
                 </div>
-
-                <?php require_once @$appView; ?>
+                <?php endif;
+                echo Alert::handle();
+                require_once @$appView; ?>
             </div>
             <!-- /.container-fluid -->
 
@@ -324,22 +344,8 @@ use PitouFW\Model\AdminUser;
     </div>
 </div>
 
-<!-- Bootstrap core JavaScript-->
-<script src="<?= ASSETS ?>vendor/jquery/jquery.min.js"></script>
-<script src="<?= ASSETS ?>vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<!-- Core plugin JavaScript-->
-<script src="<?= ASSETS ?>vendor/jquery-easing/jquery.easing.min.js"></script>
-
 <!-- Custom scripts for all pages-->
 <script src="<?= ASSETS ?>js/sb-admin-2.min.js"></script>
-
-<!-- Page level plugins -->
-<script src="<?= ASSETS ?>vendor/chart.js/Chart.min.js"></script>
-
-<!-- Page level custom scripts -->
-<script src="<?= ASSETS ?>js/demo/chart-area-demo.js"></script>
-<script src="<?= ASSETS ?>js/demo/chart-pie-demo.js"></script>
 
 </body>
 

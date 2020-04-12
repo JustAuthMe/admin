@@ -10,5 +10,12 @@ const ROUTES = [
     'home' => 'home',
     'login' => 'login',
     'logout' => 'logout',
+    'core' => [
+        'users' => 'users',
+        'apps' => 'apps'
+    ],
+    'console' => [],
+    'website' => [],
+    'admin' => [],
     'api' => []
 ];

@@ -7,7 +7,9 @@ use PDO;
 
 abstract class DB {
 	private static
-	$admin_instance = null;
+	$admin_instance = null,
+    $core_instance = null,
+    $console_instance = null;
 	
 	public static function getAdmin(): PDO {
 		if (self::$admin_instance == null) {
@@ -24,30 +26,30 @@ abstract class DB {
 	}
 
     public static function getCore(): PDO {
-        if (self::$admin_instance == null) {
+        if (self::$core_instance == null) {
             try	{
-                self::$admin_instance = new PDO('mysql:host=' . DB_CORE_HOST . ';dbname=' . DB_CORE_NAME, DB_CORE_USER, DB_CORE_PASS);
-                self::$admin_instance->exec("SET CHARACTER SET utf8");
+                self::$core_instance = new PDO('mysql:host=' . DB_CORE_HOST . ';dbname=' . DB_CORE_NAME, DB_CORE_USER, DB_CORE_PASS);
+                self::$core_instance->exec("SET CHARACTER SET utf8");
             }
             catch (Exception $e) {
                 die('Erreur : ' . $e->getMessage());
             }
         }
 
-        return self::$admin_instance;
+        return self::$core_instance;
     }
 
     public static function getConsole(): PDO {
-        if (self::$admin_instance == null) {
+        if (self::$console_instance == null) {
             try	{
-                self::$admin_instance = new PDO('mysql:host=' . DB_CONSOLE_HOST . ';dbname=' . DB_CONSOLE_NAME, DB_CONSOLE_USER, DB_CONSOLE_PASS);
-                self::$admin_instance->exec("SET CHARACTER SET utf8");
+                self::$console_instance = new PDO('mysql:host=' . DB_CONSOLE_HOST . ';dbname=' . DB_CONSOLE_NAME, DB_CONSOLE_USER, DB_CONSOLE_PASS);
+                self::$console_instance->exec("SET CHARACTER SET utf8");
             }
             catch (Exception $e) {
                 die('Erreur : ' . $e->getMessage());
             }
         }
 
-        return self::$admin_instance;
+        return self::$console_instance;
     }
 }
