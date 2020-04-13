@@ -6,12 +6,12 @@ use PitouFW\Entity\CoreClientApp;
 <table class="table table-striped" id="apps">
     <thead>
         <tr>
-            <td>#</td>
-            <td>Logo</td>
-            <td>Name</td>
-            <td>Domain name</td>
-            <td>Identifier (app_id)</td>
-            <td>Actions</td>
+            <th>#</th>
+            <th>Logo</th>
+            <th>Name</th>
+            <th>Domain name</th>
+            <th>Identifier (app_id)</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>

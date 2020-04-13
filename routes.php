@@ -14,7 +14,11 @@ const ROUTES = [
         'users' => 'users',
         'apps' => 'apps'
     ],
-    'console' => [],
+    'console' => [
+        'users' => 'users',
+        'teams' => 'teams',
+        'invitations' => 'invitations'
+    ],
     'website' => [],
     'admin' => [],
     'api' => []

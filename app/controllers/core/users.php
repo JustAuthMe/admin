@@ -33,11 +33,16 @@ switch (Request::get()->getArg(2)) {
             $user = Persist::read('CoreUser', Request::get()->getArg(3));
 
             if (POST) {
-                if ($_POST['email'] !== '' && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+                if ($_POST['active'] !== '' && in_array((int) $_POST['active'], [0, 1])) {
+                    $user->setActive($_POST['active']);
+                    Alert::success('Changes saved successfully.');
+                }
+
+                if ($_POST['email'] !== '') {
                     $old_uniqid = $user->getUniqid();
                     $new_uniqid = Utils::hashInfo($_POST['email']);
 
-                    if ($old_uniqid !== $new_uniqid) {
+                    if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) && $old_uniqid !== $new_uniqid) {
                         $user->setUniqid($new_uniqid);
                         $uniqid_update = new CoreUniqidUpdate(
                             0,
@@ -49,15 +54,12 @@ switch (Request::get()->getArg(2)) {
                             0
                         );
                         Persist::create($uniqid_update);
+                    } else {
+                        Alert::error('Please provide a valid E-Mail, different from the current one.');
                     }
                 }
 
-                if ($_POST['active'] !== '' && in_array((int) $_POST['active'], [0, 1])) {
-                    $user->setActive($_POST['active']);
-                }
-
                 Persist::update($user);
-                Alert::success('Changes saved successfully.');
             }
 
             Data::get()->add('TITLE', 'Details of Core user #' . $user->getId());

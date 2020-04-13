@@ -5,6 +5,7 @@ use PitouFW\Core\Controller;
 use PitouFW\Core\Data;
 use PitouFW\Core\Persist;
 use PitouFW\Core\Request;
+use PitouFW\Entity\ConsoleTeam;
 use PitouFW\Entity\CoreClientApp;
 use PitouFW\Model\CoreClientApp as CoreClientAppModel;
 
@@ -15,12 +16,23 @@ switch (Request::get()->getArg(2)) {
             $app = Persist::read('CoreClientApp', Request::get()->getArg(3));
 
             if (POST) {
-
+                if ($_POST['name'] !== '' && $_POST['domain'] !== '' && $_POST['redirect_url'] !== '') {
+                    $app->setName($_POST['name']);
+                    $app->setDomain($_POST['domain']);
+                    $app->setRedirectUrl($_POST['redirect_url']);
+                    Persist::update($app);
+                    Alert::success('Changes saved successfully.');
+                } else {
+                    Alert::error('All fields must be filled.');
+                }
             }
 
-            Data::get()->add('TITLE', 'Details of ' . $app->getName() . ' client app');
+            Data::get()->add('TITLE', 'Details of ' . $app->getName() . ' app');
             Data::get()->add('app', $app);
             Controller::renderView('core/apps/details');
+        } else {
+            header('location: ' . WEBROOT . 'core/apps');
+            die;
         }
         break;
 
@@ -42,7 +54,13 @@ switch (Request::get()->getArg(2)) {
         die;
 
     case 'delete':
-        break;
+        if (Persist::exists('CoreClientApp', 'id', Request::get()->getArg(3))) {
+            Persist::deleteById('CoreClientApp', Request::get()->getArg(3));
+            Alert::success('Client app deleted successfully.');
+        }
+
+        header('location: ' . WEBROOT . 'core/apps');
+        die;
 
     default:
         Data::get()->add('TITLE', 'Client apps');
