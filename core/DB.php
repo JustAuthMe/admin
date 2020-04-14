@@ -9,7 +9,8 @@ abstract class DB {
 	private static
 	$admin_instance = null,
     $core_instance = null,
-    $console_instance = null;
+    $console_instance = null,
+	$website_instance = null;
 	
 	public static function getAdmin(): PDO {
 		if (self::$admin_instance == null) {
@@ -51,5 +52,19 @@ abstract class DB {
         }
 
         return self::$console_instance;
+    }
+
+    public static function getWebsite(): PDO {
+        if (self::$website_instance == null) {
+            try	{
+                self::$website_instance = new PDO('mysql:host=' . DB_WEBSITE_HOST . ';dbname=' . DB_WEBSITE_NAME, DB_WEBSITE_USER, DB_WEBSITE_PASS);
+                self::$website_instance->exec("SET CHARACTER SET utf8");
+            }
+            catch (Exception $e) {
+                die('Erreur : ' . $e->getMessage());
+            }
+        }
+
+        return self::$website_instance;
     }
 }

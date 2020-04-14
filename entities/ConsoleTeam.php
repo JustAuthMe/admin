@@ -14,9 +14,9 @@ class ConsoleTeam implements Resourceable {
     private $name;
     private $user_id;
 
-    public function __construct($id = 0, $name = '', $user_id = 0) {
+    public function __construct($id = 0, $title = '', $user_id = 0) {
         $this->id = $id;
-        $this->name = $name;
+        $this->name = $title;
         $this->setUserId($user_id);
     }
 

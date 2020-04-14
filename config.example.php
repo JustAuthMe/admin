@@ -22,6 +22,11 @@ const DB_CONSOLE_NAME = 'jam_console';
 const DB_CONSOLE_USER = 'root';
 const DB_CONSOLE_PASS = 'secret';
 
+const DB_WEBSITE_HOST = 'mamp_mysql';
+const DB_WEBSITE_NAME = 'jam_website';
+const DB_WEBSITE_USER = 'root';
+const DB_WEBSITE_PASS = 'secret';
+
 const REDIS_HOST = '127.0.0.1';
 const REDIS_PORT = 6379;
 const REDIS_PASS = '';

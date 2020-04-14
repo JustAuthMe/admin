@@ -19,7 +19,9 @@ const ROUTES = [
         'teams' => 'teams',
         'invitations' => 'invitations'
     ],
-    'website' => [],
+    'website' => [
+        'pages' => 'pages'
+    ],
     'admin' => [],
     'api' => []
 ];

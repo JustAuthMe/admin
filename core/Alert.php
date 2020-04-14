@@ -28,7 +28,7 @@ class Alert {
         $type = $_SESSION['alert']['type'] === 'success' ? 'success' : 'danger';
         $isError = $type !== 'success';
         $message = $_SESSION['alert']['message'];
-        $html = '<div class="alert alert-' . $type . '">' . ($isError ? 'Erreur : ' : '') . $message . '</div>';
+        $html = '<div class="alert alert-' . $type . ' mb-5">' . ($isError ? 'Erreur : ' : '') . $message . '</div>';
 
         unset($_SESSION['alert']);
         return $html;

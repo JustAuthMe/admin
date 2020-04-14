@@ -13,9 +13,9 @@ class AdminRole implements Resourceable {
     private $name;
     private $slug;
 
-    public function __construct($id = 0, $name = '', $slug = '') {
+    public function __construct($id = 0, $title = '', $slug = '') {
         $this->id = $id;
-        $this->name = $name;
+        $this->name = $title;
         $this->slug = $slug;
     }
 
