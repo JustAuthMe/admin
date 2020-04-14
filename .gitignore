@@ -12,7 +12,7 @@ fabric.properties
 .cache/
 .settings/
 .buildpath
-vendor/
+/vendor/
 *.dist.php
 qr.php
 entity_gen.php
