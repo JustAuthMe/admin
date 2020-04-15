@@ -19,7 +19,7 @@ use PitouFW\Entity\ConsoleUser;
         <tr>
             <td><?= $user->getId() ?></td>
             <td><?= $user->getFullname() ?></td>
-            <td><?= $user->getEmail() ?></td>
+            <td><a href="mailto:<?= $user->getEmail() ?>"><?= $user->getEmail() ?></a></td>
             <td>
                 <a href="<?= WEBROOT ?>console/users/details/<?= $user->getId() ?>" class="btn btn-outline-primary">
                     <i class="fas fa-edit"></i>

@@ -18,7 +18,7 @@ use PitouFW\Entity\ConsoleInvitation;
         /** @var ConsoleInvitation $invitation */ ?>
         <tr>
             <td><?= $invitation->getId() ?></td>
-            <td><?= $invitation->getEmail() ?></td>
+            <td><a href="mailto:<?= $invitation->getEmail() ?>"><?= $invitation->getEmail() ?></a></td>
             <td><a href="<?= WEBROOT ?>console/teams/details/<?= $invitation->team->getId() ?>"><?= $invitation->team->getName() ?></a></td>
             <td>
                 <?php if ($invitation->getRole() == 1): ?>

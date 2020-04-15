@@ -12,11 +12,13 @@ class AdminRole implements Resourceable {
     private $id;
     private $name;
     private $slug;
+    private $theme;
 
-    public function __construct($id = 0, $title = '', $slug = '') {
+    public function __construct($id = 0, $name = '', $slug = '', $theme = '') {
         $this->id = $id;
-        $this->name = $title;
+        $this->name = $name;
         $this->slug = $slug;
+        $this->theme = $theme;
     }
 
     public static function getDbInstance(): PDO {
@@ -49,5 +51,13 @@ class AdminRole implements Resourceable {
 
     public function setSlug($slug) {
         $this->slug = $slug;
+    }
+
+    public function getTheme(): string {
+        return $this->theme;
+    }
+
+    public function setTheme(string $theme) {
+        $this->theme = $theme;
     }
 }

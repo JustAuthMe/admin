@@ -43,17 +43,21 @@ switch (Request::get()->getArg(2)) {
                     $new_uniqid = Utils::hashInfo($_POST['email']);
 
                     if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) && $old_uniqid !== $new_uniqid) {
-                        $user->setUniqid($new_uniqid);
-                        $uniqid_update = new CoreUniqidUpdate(
-                            0,
-                            $user->getId(),
-                            $old_uniqid,
-                            $new_uniqid,
-                            $_SERVER['REMOTE_ADDR'],
-                            Utils::time(),
-                            0
-                        );
-                        Persist::create($uniqid_update);
+                        if (!Persist::exists('CoreUser', 'uniqid', $new_uniqid)) {
+                            $user->setUniqid($new_uniqid);
+                            $uniqid_update = new CoreUniqidUpdate(
+                                0,
+                                $user->getId(),
+                                $old_uniqid,
+                                $new_uniqid,
+                                $_SERVER['REMOTE_ADDR'],
+                                Utils::time(),
+                                0
+                            );
+                            Persist::create($uniqid_update);
+                        } else {
+                            Alert::error('An user with this E-Mail address already exists');
+                        }
                     } else {
                         Alert::error('Please provide a valid E-Mail, different from the current one.');
                     }

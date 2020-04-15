@@ -20,7 +20,11 @@ switch (Request::get()->getArg(2)) {
                 }
 
                 if ($_POST['email'] !== '' && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-                    $user->setEmail($_POST['email']);
+                    if ($_POST['email'] === $user->getEmail() || !Persist::exists('ConsoleUser', 'email', $_POST['email'])) {
+                        $user->setEmail($_POST['email']);
+                    } else {
+                        Alert::error('An user with this E-Mail address already exists');
+                    }
                 } else {
                     Alert::error('Please provide a valid E-Mail address');
                 }

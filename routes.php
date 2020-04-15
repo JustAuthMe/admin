@@ -22,6 +22,9 @@ const ROUTES = [
     'website' => [
         'pages' => 'pages'
     ],
-    'admin' => [],
+    'admin' => [
+        'users' => 'users',
+        'roles' => 'roles'
+    ],
     'api' => []
 ];

@@ -21,7 +21,7 @@ use PitouFW\Entity\CoreClientApp;
             <td><?= $app->getId() ?></td>
             <td><img src="<?= $app->getLogo() ?>" style="height:40px;width:40px;border-radius:20px" /></td>
             <td><?= $app->getName() ?></td>
-            <td><?= $app->getDomain() ?></td>
+            <td><a href="https://<?= $app->getDomain() ?>"><?= $app->getDomain() ?></a></td>
             <td><?= $app->getAppId() ?></td>
             <td>
                 <a href="<?= WEBROOT ?>core/apps/details/<?= $app->getId() ?>" class="btn btn-outline-primary">

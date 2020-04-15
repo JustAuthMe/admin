@@ -6,17 +6,17 @@ use PitouFW\Entity\WebsitePage;
 
 if ($page->isPublished()):
 ?>
-<a href="<?= WEBROOT ?>website/pages/unpublish/<?= $page->getId() ?>" class="btn btn-outline-warning mb-2">
+<a href="<?= WEBROOT ?>website/pages/unpublish/<?= $page->getId() ?>" class="btn btn-outline-warning mb-2" onclick="return confirm('Are you sure?')">
     <i class="fas fa-recycle"></i>
     Unpublish page
 </a>
 <?php else: ?>
-<a href="<?= WEBROOT ?>website/pages/publish/<?= $page->getId() ?>" class="btn btn-outline-success mb-2">
+<a href="<?= WEBROOT ?>website/pages/publish/<?= $page->getId() ?>" class="btn btn-outline-success mb-2" onclick="return confirm('Are you sure?')">
     <i class="fas fa-paper-plane"></i>
     Publish page
 </a>
 <?php endif ?>
-<a href="<?= WEBROOT ?>website/pages/delete/<?= $page->getId() ?>" class="btn btn-outline-danger mb-2">
+<a href="<?= WEBROOT ?>website/pages/delete/<?= $page->getId() ?>" class="btn btn-outline-danger mb-2" onclick="return confirm('Are you sure?')">
     <i class="fas fa-trash-alt"></i>
     Delete page
 </a>

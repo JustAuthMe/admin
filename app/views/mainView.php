@@ -105,9 +105,9 @@ use PitouFW\Model\AdminUser;
             </a>
             <div id="collapseThree" class="collapse <?= R::r('website') ? 'show' : '' ?>" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item <?= R::r('website/pricing') ? 'active' : '' ?>" href="<?= WEBROOT ?>website/pricing">Price plans</a>
                     <a class="collapse-item <?= R::r('website/pages') ? 'active' : '' ?>" href="<?= WEBROOT ?>website/pages">Static pages</a>
-                    <a class="collapse-item <?= R::r('website/settings') ? 'active' : '' ?>" href="<?= WEBROOT ?>website/settings">Settings</a>
+                    <!-- <a class="collapse-item <?= R::r('website/pricing') ? 'active' : '' ?>" href="<?= WEBROOT ?>website/pricing">Price plans</a>
+                    <a class="collapse-item <?= R::r('website/settings') ? 'active' : '' ?>" href="<?= WEBROOT ?>website/settings">Settings</a> -->
                 </div>
             </div>
         </li>
@@ -346,6 +346,7 @@ use PitouFW\Model\AdminUser;
 
 <!-- Custom scripts for all pages-->
 <script src="<?= ASSETS ?>js/sb-admin-2.min.js"></script>
+<script src="<?= JS ?>script.js"></script>
 
 </body>
 
