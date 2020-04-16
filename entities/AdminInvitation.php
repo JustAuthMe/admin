@@ -13,12 +13,14 @@ class AdminInvitation implements Resourceable {
     private $id;
     private $user_id;
     private $email;
+    private $role_id;
     private $timestamp;
 
-    public function __construct($id = 0, $user_id = 0, $email = '', $timestamp = 0) {
+    public function __construct($id = 0, $user_id = 0, $email = '', $role_id = 0, $timestamp = 0) {
         $this->id = $id;
         $this->setUserId($user_id);
         $this->email = $email;
+        $this->setRoleId($role_id);
         $this->timestamp = $timestamp;
     }
 
@@ -55,6 +57,17 @@ class AdminInvitation implements Resourceable {
 
     public function setEmail($email) {
         $this->email = $email;
+    }
+
+    public function getRoleId() {
+        return $this->role_id;
+    }
+
+    public function setRoleId($role_id) {
+        $this->role_id = $role_id;
+        if (Persist::exists('AdminRole', 'id', $role_id)) {
+            $this->role = Persist::read('AdminRole', $role_id);
+        }
     }
 
     public function getTimestamp() {

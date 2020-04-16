@@ -24,7 +24,9 @@ const ROUTES = [
     ],
     'admin' => [
         'users' => 'users',
-        'roles' => 'roles'
+        'roles' => 'roles',
+        'invitations' => 'invitations',
+        'permissions' => 'permissions'
     ],
     'api' => []
 ];

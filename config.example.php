@@ -33,5 +33,3 @@ const REDIS_PASS = '';
 
 const JAM_API = 'https://beta.justauth.me/api/';
 const JAM_SECRET = 'xxxxxxxxxxxxx';
-
-const REGISTRATION_ALLOWED = false;

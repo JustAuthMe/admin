@@ -6,6 +6,7 @@ use PitouFW\Core\Data;
 use PitouFW\Core\Persist;
 use PitouFW\Core\Request;
 use PitouFW\Entity\AdminUser;
+use PitouFW\Model\AdminUser as AdminUserModel;
 
 switch (Request::get()->getArg(2)) {
     case 'details':
@@ -53,8 +54,12 @@ switch (Request::get()->getArg(2)) {
 
     case 'delete':
         if (Persist::exists('AdminUser', 'id', Request::get()->getArg(3))) {
-            Persist::deleteById('AdminUser', Request::get()->getArg(3));
-            Alert::success('Admin deleted successfully.');
+            if (AdminUserModel::get()->getId() !== Request::get()->getArg(3)) {
+                Persist::deleteById('AdminUser', Request::get()->getArg(3));
+                Alert::success('Admin deleted successfully.');
+            } else {
+                Alert::error('You can\'t delete yourself.');
+            }
         }
 
         header('location: ' . WEBROOT . 'admin/users');

@@ -27,6 +27,10 @@ class Request {
 		return '';
 	}
 
+    public function getArgs() {
+        return $this->args;
+    }
+
     public static function r(string $route): bool {
 
 	    return strpos(implode('/', self::get()->args), $route) === 0;

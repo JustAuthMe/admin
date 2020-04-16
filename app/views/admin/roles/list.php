@@ -11,11 +11,11 @@ use PitouFW\Entity\AdminRole;
         <select name="theme" class="form-control mr-2" required>
             <option value="">Role theme</option>
             <option value="danger">danger</option>
-            <option value="danger">warning</option>
-            <option value="danger">success</option>
-            <option value="danger">info</option>
-            <option value="danger">primary</option>
-            <option value="danger">secondary</option>
+            <option value="warning">warning</option>
+            <option value="success">success</option>
+            <option value="info">info</option>
+            <option value="primary">primary</option>
+            <option value="secondary">secondary</option>
         </select>
         <button type="submit" class="btn btn-success">
             <i class="fas fa-plus"></i>

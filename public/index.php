@@ -69,6 +69,11 @@ if (Request::get()->getArg(0) !== 'login' && !AdminUser::isLogged()) {
     die;
 }
 
+if (Request::get()->getArg(0) !== 'logout' && AdminUser::isLogged() && !AdminUser::hasPermission()) {
+    Controller::http403Forbidden();
+    die;
+}
+
 require_once Router::get()->getPathToRequire();
 if (Request::get()->getArg(0) == 'api') {
     Controller::renderView('json/json', false);

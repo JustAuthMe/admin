@@ -6,16 +6,72 @@ use PitouFW\Core\Data;
 use PitouFW\Core\Persist;
 use PitouFW\Core\Request;
 use PitouFW\Entity\AdminRole;
+use PitouFW\Model\AdminInvitation;
+use PitouFW\Model\AdminUser;
 
 switch (Request::get()->getArg(2)) {
     case 'details':
-        if (POST) {
+        if (Persist::exists('AdminRole', 'id', Request::get()->getArg(3))) {
+            /** @var AdminRole $role */
+            $role = Persist::read('AdminRole', Request::get()->getArg(3));
 
+            if (POST) {
+                Alert::success('Changes saved successfully.');
+
+                if ($_POST['name'] !== '') {
+                    if ($role->getName() === $_POST['name'] || !Persist::exists('AdminRole', 'name', $_POST['name'])) {
+                        $role->setName($_POST['name']);
+                    } else {
+                        Alert::error('A role with this name already exists.');
+                    }
+                }
+
+                if ($_POST['slug'] !== '') {
+                    if ($role->getSlug() === $_POST['slug'] || !Persist::exists('AdminRole', 'slug', $_POST['slug'])) {
+                        $role->setSlug($_POST['slug']);
+                    } else {
+                        Alert::error('A role with this slug already exists.');
+                    }
+                }
+
+                if ($_POST['theme'] !== '' && in_array($_POST['theme'], ['danger', 'warning', 'success', 'info', 'primary', 'secondary'])) {
+                    $role->setTheme($_POST['theme']);
+                } else {
+                    Alert::error('Invalid theme.');
+                }
+
+                Persist::update($role);
+            }
+
+            Data::get()->add('TITLE', 'Details of role #' . $role->getId() . ': ' . $role->getName());
+            Data::get()->add('roles', Persist::fetchAll('AdminRole', "ORDER BY id DESC"));
+            Data::get()->add('role', $role);
+            Controller::renderView('admin/roles/details');
+        } else {
+            header('location: ' . WEBROOT . 'admin/roles');
+            die;
         }
         break;
 
     case 'delete':
-        break;
+        if (Persist::exists('AdminRole', 'id', Request::get()->getArg(3))) {
+            /** @var AdminRole $role */
+            $role = Persist::read('AdminRole', Request::get()->getArg(3));
+
+            if (POST && $role->getId() !== $_POST['new_role'] && Persist::exists('AdminRole', 'id', $_POST['new_role'])) {
+                AdminUser::updateRoles($role->getId(), $_POST['new_role']);
+                AdminInvitation::updateRoles($role->getId(), $_POST['new_role']);
+                Persist::delete($role);
+                Alert::success('Role deleted successfully');
+            } else {
+                Alert::error('Invalid new role');
+                header('location: ' . WEBROOT . 'admin/roles/details/' . $role->getId());
+                die;
+            }
+        }
+
+        header('location: ' . WEBROOT . 'admin/roles');
+        die;
 
     default:
         if (POST) {

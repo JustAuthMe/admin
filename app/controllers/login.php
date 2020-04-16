@@ -1,8 +1,11 @@
 <?php
+
+use PitouFW\Core\Alert;
 use PitouFW\Core\Controller;
 use PitouFW\Core\Data;
 use PitouFW\Core\Persist;
 use PitouFW\Core\Utils;
+use PitouFW\Entity\AdminInvitation;
 use PitouFW\Entity\AdminUser;
 use PitouFW\Model\AdminUser as UserModel;
 
@@ -19,10 +22,15 @@ if (POST) {
                 /** @var AdminUser $user */
                 $user = Persist::readBy('AdminUser', 'jam_id', $response['jam_id']);
                 $_SESSION['uid'] = $user->getId();
-            } else if (REGISTRATION_ALLOWED) {
+            } else if (Persist::exists('AdminInvitation', 'email', $response['email'])) {
+                /** @var AdminInvitation $invitation */
+                $invitation = Persist::readBy('AdminInvitation', 'email', $response['email']);
+                Persist::delete($invitation);
+
                 $user = new AdminUser(
                     0,
                     $response['jam_id'],
+                    $invitation->getRoleId(),
                     $response['email'],
                     $response['firstname'],
                     $response['lastname'],
