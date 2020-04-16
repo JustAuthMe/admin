@@ -7,8 +7,10 @@ use PitouFW\Entity\AdminRole;
 <h4>Invite someone</h4>
 <form action="" method="post">
     <div class="form-inline mb-2">
-        <input type="email" name="email" required class="form-control mr-2" placeholder="E-Mail address" />
-        <select name="role" class="form-control mr-2" required>
+        Invite
+        <input type="email" name="email" required class="form-control ml-2 mr-2" placeholder="E-Mail address" />
+        as
+        <select name="role" class="form-control ml-2 mr-2" required>
             <option value="">Assigned role</option>
             <?php foreach ($roles as $role):
             /** @var AdminRole $role */ ?>

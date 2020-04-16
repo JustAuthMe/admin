@@ -2,6 +2,7 @@
 
 use PitouFW\Core\Alert;
 use PitouFW\Core\Request as R;
+use PitouFW\Model\AdminPermission as P;
 use PitouFW\Model\AdminUser;
 
 ?>
@@ -53,11 +54,13 @@ use PitouFW\Model\AdminUser;
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - Dashboard -->
+        <?php if (P::p('home')): ?>
         <li class="nav-item <?= R::r('home') ? 'active' : '' ?>">
             <a class="nav-link" href="<?= WEBROOT ?>">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
         </li>
+        <?php endif ?>
 
         <!--
         <hr class="sidebar-divider">
@@ -66,6 +69,7 @@ use PitouFW\Model\AdminUser;
         </div> -->
 
         <!-- Nav Item - Utilities Collapse Menu -->
+        <?php if (P::p(['core/users','core/apps'])): ?>
         <li class="nav-item <?= R::r('core') ? 'active' : '' ?>">
             <a class="nav-link <?= !R::r('core') ? 'collapsed' : '' ?>" href="#" data-toggle="collapse" data-target="#collapseOne"
                aria-expanded="<?= R::r('core') ? 'true' : 'false' ?>" aria-controls="collapseOne">
@@ -79,8 +83,10 @@ use PitouFW\Model\AdminUser;
                 </div>
             </div>
         </li>
+        <?php endif ?>
 
         <!-- Nav Item - Pages Collapse Menu -->
+        <?php if(P::p(['console/users','console/teams','console/invitation'])): ?>
         <li class="nav-item <?= R::r('console') ? 'active' : '' ?>">
             <a class="nav-link <?= !R::r('console') ? 'collapsed' : '' ?>" href="#" data-toggle="collapse" data-target="#collapseTwo"
                aria-expanded="<?= R::r('console') ? 'true' : 'false' ?>" aria-controls="collapseTwo">
@@ -95,8 +101,10 @@ use PitouFW\Model\AdminUser;
                 </div>
             </div>
         </li>
+        <?php endif ?>
 
         <!-- Nav Item - Pages Collapse Menu -->
+        <?php if (P::p(['website/pages'])): ?>
         <li class="nav-item <?= R::r('website') ? 'active' : '' ?>">
             <a class="nav-link <?= !R::r('website') ? 'collapsed' : '' ?>" href="#" data-toggle="collapse" data-target="#collapseThree"
                aria-expanded="<?= R::r('website') ? 'true' : 'false' ?>>" aria-controls="collapseThree">
@@ -111,19 +119,23 @@ use PitouFW\Model\AdminUser;
                 </div>
             </div>
         </li>
+        <?php endif ?>
 
         <!-- Nav Item - Pages Collapse Menu -->
+        <?php if (P::p('support')): ?>
         <li class="nav-item <?= R::r('support') ? 'active' : '' ?>">
             <a class="nav-link" href="<?= WEBROOT ?>support">
                 <i class="fas fa-fw fa-hands-helping"></i>
                 <span>Support</span>
             </a>
         </li>
+        <?php endif ?>
 
         <!-- Divider -->
         <hr class="sidebar-divider">
 
         <!-- Nav Item - Pages Collapse Menu -->
+        <?php if (P::p(['admin/users','admin/roles','admin/permission','admin/invitations'])): ?>
         <li class="nav-item <?= R::r('admin') ? 'active' : '' ?>">
             <a class="nav-link <?= !R::r('admin') ? 'collapsed' : '' ?>" href="#" data-toggle="collapse" data-target="#collapseFour"
                aria-expanded="<?= R::r('admin') ? 'ture' : 'false' ?>" aria-controls="collapseFour">
@@ -142,6 +154,7 @@ use PitouFW\Model\AdminUser;
 
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
+        <?php endif ?>
 
         <!-- Sidebar Toggler (Sidebar) -->
         <div class="text-center d-none d-md-inline">

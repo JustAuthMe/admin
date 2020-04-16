@@ -67,6 +67,10 @@ abstract class Persist {
             $getter = self::getGetterName($prop->getName());
             $columns[] = $prop->getName();
             $val = $object->$getter();
+            if ($val === null) {
+                continue;
+            }
+
             if (is_array($val) || is_object($val)) {
                 $val = serialize($val);
             }
@@ -82,7 +86,7 @@ abstract class Persist {
         return $db_instance->lastInsertId();
     }
 
-    public static function exists(string $classname, string $column, string $value): bool {
+    public static function exists(string $classname, string $column, $value): bool {
         $classname = '\PitouFW\Entity\\'.$classname;
         $table_name = $classname::getTableName();
         /** @var PDO $db_instance */

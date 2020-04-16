@@ -5,6 +5,8 @@ use PitouFW\Core\Controller;
 use PitouFW\Core\Data;
 use PitouFW\Core\Persist;
 use PitouFW\Core\Request;
+use PitouFW\Core\Utils;
+use PitouFW\Entity\AdminPermission;
 use PitouFW\Entity\AdminRole;
 use PitouFW\Model\AdminInvitation;
 use PitouFW\Model\AdminUser;
@@ -86,8 +88,19 @@ switch (Request::get()->getArg(2)) {
                                     $_POST['slug'],
                                     $_POST['theme']
                                 );
+                                $rid = Persist::create($role);
+                                $role->setId($rid);
 
-                                Persist::create($role);
+                                // TODO Debug
+                                /*$permission = new AdminPermission(
+                                    0,
+                                    $role->getId(),
+                                    'home',
+                                    null,
+                                    Utils::time()
+                                );
+                                Persist::create($permission);*/
+
                                 Alert::success('Role created successfully.');
                             } else {
                                 Alert::error('Invalid theme.');

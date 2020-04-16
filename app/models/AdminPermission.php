@@ -16,4 +16,17 @@ class AdminPermission {
 
         return $rep['cnt'] > 0;
     }
+
+    public static function p($route = null) {
+        if (is_array($route)) {
+            $return = false;
+            foreach ($route as $r) {
+                $return = $return || AdminUser::hasPermission($r);
+            }
+
+            return $return;
+        }
+
+        return AdminUser::hasPermission($route);
+    }
 }

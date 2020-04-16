@@ -24,14 +24,14 @@ class AdminUser {
         $req->execute([$new_role, $old_role]);
     }
 
-    public static function hasPermission() {
+    public static function hasPermission($route = null) {
         /*
          * il faut que le role de l'user actuel ai une permission correspondante à la route actuelle ou à un wildcard
          * pour une route inférieure
          */
 
         $role_id = self::get()->getRoleId();
-        $route = implode('/', Request::get()->getArgs());
+        $route = $route === null ? implode('/', Request::get()->getArgs()) : $route;
 
         if (AdminPermission::exists($role_id, '*') || AdminPermission::exists($role_id, $route) || AdminPermission::exists($role_id, $route . '/*')) {
             return true;
