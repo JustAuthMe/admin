@@ -4,9 +4,10 @@
     <div class="row">
         <div class="col-md-6 col-lg-4 col-xl-3">
             <div class="card">
-                <div class="card-body">
-                    <i class="fa fa-<?= $alert->type === 'info' ? 'info-circle' : 'exclamation-triangle' ?>" style="float:left;font-size:30px;color:<?= $alert->type === 'info' ? '#3498db' : '#ff9900' ?>;line-height:40px"></i>
-                    <p style="padding-left:40px;line-height:40px;margin:0;"><?= $alert->text ?></p>
+                <div class="card-body d-flex align-items-center">
+                    <i class="fa fa-<?= $alert->type === 'info' ? 'info-circle' : 'exclamation-triangle' ?>"
+                       style="width:30px;font-size:30px;color:<?= $alert->type === 'info' ? '#3498db' : '#ff9900' ?>;"></i>
+                    <p style="padding-left: 20px;margin:0"><?= $alert->text ?></p>
                 </div>
             </div>
         </div>

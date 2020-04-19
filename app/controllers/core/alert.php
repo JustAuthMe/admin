@@ -9,7 +9,7 @@ use PitouFW\Core\Utils;
 $redis = new \PitouFW\Core\Redis();
 $cache_key = 'app_alert';
 
-switch (Request::get()->getArgs(2)) {
+switch (Request::get()->getArg(2)) {
     case 'delete':
         $redis->del($cache_key);
         Alert::success('Alert removed successfully.');
