@@ -12,7 +12,8 @@ const ROUTES = [
     'logout' => 'logout',
     'core' => [
         'users' => 'users',
-        'apps' => 'apps'
+        'apps' => 'apps',
+        'alert' => 'alert'
     ],
     'console' => [
         'users' => 'users',

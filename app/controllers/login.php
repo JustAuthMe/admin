@@ -1,6 +1,5 @@
 <?php
 
-use PitouFW\Core\Alert;
 use PitouFW\Core\Controller;
 use PitouFW\Core\Data;
 use PitouFW\Core\Persist;
@@ -14,41 +13,39 @@ if (UserModel::isLogged()) {
     die;
 }
 
-if (POST) {
-    if (isset($_POST['access_token'])) {
-        $response = json_decode(file_get_contents(JAM_API . 'data?token=' . $_POST['access_token'] . '&secret=' . JAM_SECRET), true);
-        if ($response['status'] === 'success') {
-            if (Persist::exists('AdminUser', 'jam_id', $response['jam_id'])) {
-                /** @var AdminUser $user */
-                $user = Persist::readBy('AdminUser', 'jam_id', $response['jam_id']);
-                $_SESSION['uid'] = $user->getId();
-            } else if (Persist::exists('AdminInvitation', 'email', $response['email'])) {
-                /** @var AdminInvitation $invitation */
-                $invitation = Persist::readBy('AdminInvitation', 'email', $response['email']);
-                Persist::delete($invitation);
+if (isset($_GET['access_token'])) {
+    $response = json_decode(file_get_contents(JAM_API . 'data?access_token=' . $_GET['access_token'] . '&secret=' . JAM_SECRET), true);
+    if ($response['status'] === 'success') {
+        if (Persist::exists('AdminUser', 'jam_id', $response['jam_id'])) {
+            /** @var AdminUser $user */
+            $user = Persist::readBy('AdminUser', 'jam_id', $response['jam_id']);
+            $_SESSION['uid'] = $user->getId();
+        } else if (Persist::exists('AdminInvitation', 'email', $response['email'])) {
+            /** @var AdminInvitation $invitation */
+            $invitation = Persist::readBy('AdminInvitation', 'email', $response['email']);
+            Persist::delete($invitation);
 
-                $user = new AdminUser(
-                    0,
-                    $response['jam_id'],
-                    $invitation->getRoleId(),
-                    $response['email'],
-                    $response['firstname'],
-                    $response['lastname'],
-                    '',
-                    Utils::time()
-                );
-                $uid = Persist::create($user);
-                $user->setId($uid);
+            $user = new AdminUser(
+                0,
+                $response['jam_id'],
+                $invitation->getRoleId(),
+                $response['email'],
+                $response['firstname'],
+                $response['lastname'],
+                '',
+                Utils::time()
+            );
+            $uid = Persist::create($user);
+            $user->setId($uid);
 
-                file_put_contents(ROOT . 'public/upload/avatar_' . $user->getId() . '.jpg', file_get_contents($response['avatar']));
-                $user->setAvatar(WEBROOT . 'upload/avatar_' . $user->getId() . '.jpg');
-                Persist::update($user);
-                $_SESSION['uid'] = $user->getId();
-            }
-
-            header('location: ' . WEBROOT);
-            die;
+            file_put_contents(ROOT . 'public/upload/avatar_' . $user->getId() . '.jpg', file_get_contents($response['avatar']));
+            $user->setAvatar(WEBROOT . 'upload/avatar_' . $user->getId() . '.jpg');
+            Persist::update($user);
+            $_SESSION['uid'] = $user->getId();
         }
+
+        header('location: ' . WEBROOT);
+        die;
     }
 }
 

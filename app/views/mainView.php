@@ -80,6 +80,7 @@ use PitouFW\Model\AdminUser;
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item <?= R::r('core/users') ? 'active' : '' ?>" href="<?= WEBROOT ?>core/users">Users</a>
                     <a class="collapse-item <?= R::r('core/apps') ? 'active' : '' ?>" href="<?= WEBROOT ?>core/apps">Apps</a>
+                    <a class="collapse-item <?= R::r('core/alert') ? 'active' : '' ?>" href="<?= WEBROOT ?>core/alert">Alert banner</a>
                 </div>
             </div>
         </li>
