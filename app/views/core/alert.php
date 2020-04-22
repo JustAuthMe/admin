@@ -13,7 +13,7 @@
         </div>
     </div>
     <p class="mt-2">
-        Remaining time: <span id="remaining"><?= $ttl ?></span> seconds
+        Remaining time: <span id="remaining"><?= $alert->ttl ?></span> seconds
     </p>
     <a href="<?= WEBROOT ?>core/alert/delete" class="btn btn-outline-danger" onclick="return confirm('Are you sure ?')">
         <i class="fa fa-trash-alt"></i>

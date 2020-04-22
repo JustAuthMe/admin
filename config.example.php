@@ -33,3 +33,6 @@ const REDIS_PASS = '';
 
 const JAM_API = 'https://beta.justauth.me/api/';
 const JAM_SECRET = 'xxxxxxxxxxxxx';
+
+const JAM_INTERNAL_API_KEY = 'xxxxx';
+const JAM_ALERT_API = 'http://192.168.0.9/JustAuth.Me/alert/';

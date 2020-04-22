@@ -6,13 +6,21 @@ use PitouFW\Core\Data;
 use PitouFW\Core\Request;
 use PitouFW\Core\Utils;
 
-$redis = new \PitouFW\Core\Redis();
-$cache_key = 'app_alert';
-
 switch (Request::get()->getArg(2)) {
     case 'delete':
-        $redis->del($cache_key);
-        Alert::success('Alert removed successfully.');
+        $opts = ['http' => [
+            'method' => 'DELETE',
+            'header' => 'X-Access-Token: ' . JAM_INTERNAL_API_KEY . "\r\n",
+            'ignore_errors' => true
+        ]];
+        $context = stream_context_create($opts);
+        $response = json_decode(file_get_contents(JAM_ALERT_API, false, $context));
+
+        if ($response->status === 'success') {
+            Alert::success('Alert removed successfully.');
+        } else {
+            Alert::error('Error during alert removal.');
+        }
         header('location: ' . WEBROOT . 'core/alert');
         die;
 
@@ -21,16 +29,27 @@ switch (Request::get()->getArg(2)) {
             if ($_POST['type'] !== '' && $_POST['text'] !== '') {
                 if (in_array($_POST['type'], ['info', 'warning'])) {
                     $ttl = $_POST['ttl'] !== '' ? (int) $_POST['ttl'] : 86400;
-                    $redis->set(
-                        $cache_key,
-                        [
-                            'id' => Utils::time(),
-                            'type' => $_POST['type'],
-                            'text' => $_POST['text']
-                        ],
-                        $ttl
-                    );
-                    Alert::success('Alert successfully sent to all users!');
+
+                    $postdata = http_build_query([
+                        'alert_type' => $_POST['type'],
+                        'alert_text' => $_POST['text'],
+                        'alert_ttl' => $_POST['ttl']
+                    ]);
+                    $opts = ['http' => [
+                        'method' => 'POST',
+                        'header' => 'Content-Type: application/x-www-form-urlencoded' . "\r\n" .
+                            'X-Access-Token: ' . JAM_INTERNAL_API_KEY . "\r\n",
+                        'content' => $postdata,
+                        'ignore_errors' => true
+                    ]];
+                    $context = stream_context_create($opts);
+                    $response = json_decode(file_get_contents(JAM_ALERT_API, false, $context));
+
+                    if ($response->status === 'success') {
+                        Alert::success('Alert successfully sent to all users!');
+                    } else {
+                        Alert::error('Error during alert sending');
+                    }
                 } else {
                     Alert::error('Invalid alert type');
                 }
@@ -39,10 +58,14 @@ switch (Request::get()->getArg(2)) {
             }
         }
 
-        $cached = $redis->get($cache_key);
+        $opts = ['http' => [
+            'header' => 'X-Access-Token: ' . JAM_INTERNAL_API_KEY . "\r\n",
+            'ignore_errors' => true
+        ]];
+        $context = stream_context_create($opts);
+        $response = json_decode(file_get_contents(JAM_ALERT_API, false, $context));
 
         Data::get()->add('TITLE', 'In-App alert banner');
-        Data::get()->add('alert', $cached !== false ? $cached : null);
-        Data::get()->add('ttl', $redis->ttl($cache_key));
+        Data::get()->add('alert', $response->status === 'success' ? $response->alert : null);
         Controller::renderView('core/alert');
 }
