@@ -124,12 +124,12 @@ use PitouFW\Model\AdminUser;
 
         <!-- Nav Item - Pages Collapse Menu -->
         <?php if (P::p('support')): ?>
-        <li class="nav-item <?= R::r('support') ? 'active' : '' ?>">
+        <!-- <li class="nav-item <?= R::r('support') ? 'active' : '' ?>">
             <a class="nav-link" href="<?= WEBROOT ?>support">
                 <i class="fas fa-fw fa-hands-helping"></i>
                 <span>Support</span>
             </a>
-        </li>
+        </li> -->
         <?php endif ?>
 
         <!-- Divider -->
