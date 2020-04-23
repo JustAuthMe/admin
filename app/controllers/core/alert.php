@@ -33,7 +33,7 @@ switch (Request::get()->getArg(2)) {
                     $postdata = http_build_query([
                         'alert_type' => $_POST['type'],
                         'alert_text' => $_POST['text'],
-                        'alert_ttl' => $_POST['ttl']
+                        'alert_ttl' => $ttl
                     ]);
                     $opts = ['http' => [
                         'method' => 'POST',
