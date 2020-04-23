@@ -19,3 +19,4 @@ entity_gen.php
 demo/
 log/*.log
 sb-admin/
+/public/upload/*
