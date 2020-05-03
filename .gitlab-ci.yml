@@ -1,0 +1,40 @@
+cache:
+  paths:
+    - vendor/
+stages:
+  - setup_prod
+  - deploy_prod
+
+setup:prod:
+  stage: setup_prod
+  script:
+    - rm .git -r
+    - composer install --no-dev
+    - ENV_PREFIX="PROD_" ENV_NAME="prod" php deploy/before_deploy.php > config/config.dist.php
+    - touch build.tar.gz
+    - tar --exclude=build.tar.gz -czvf build.tar.gz .
+  artifacts:
+    paths:
+      - ./build.tar.gz
+    expire_in: 1 week
+  only:
+    - tags
+
+deploy:prod:
+  before_script:
+    - chmod u+x ./deploy/*.sh
+  stage: deploy_prod
+  environment:
+    name: prod
+    url: http://admin.local.justauth.me
+  variables:
+    DEPLOY_HOSTS: "$PROD_HOSTS"
+    ROOT_PATH: "/var/www/$PROD_ROOT_PATH"
+  script:
+    - PK_PATH="$PROD_PK" ./deploy/deploy.sh
+    - PK_PATH="$PROD_PK" ./deploy/after_deploy.sh
+  dependencies:
+    - setup:prod
+  when: manual
+  only:
+    - tags

@@ -1,7 +1,4 @@
 <?php
-/**
- * Rename this file "config.dist.php"
- */
 
 const PROD_ENV = false;
 const PROD_HOST = 'localhost';
@@ -37,3 +34,7 @@ const JAM_SECRET = 'xxxxxxxxxxxxx';
 const JAM_INTERNAL_API_KEY = 'xxxxx';
 const JAM_ALERT_API = 'http://192.168.0.9/JustAuth.Me/alert/';
 const JAM_WEBSITE_PAGE_RENDERING_KEY = 'xxxxx';
+
+const DEPLOYED_REF = 'NA';
+const DEPLOYED_COMMIT = 'NA';
+const ENV_NAME = "dev";
