@@ -6,7 +6,7 @@ use PitouFW\Core\Router;
 use PitouFW\Model\AdminUser;
 
 session_start();
-require_once '../config.dist.php';
+require_once '../config/config.php';
 require_once '../vendor/autoload.php';
 
 $bool = PROD_ENV ? 0 : 1;
