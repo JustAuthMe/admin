@@ -27,7 +27,7 @@ use PitouFW\Entity\WebsitePage;
         <tr>
             <td><?= $page->getId() ?></td>
             <td><?= $page->getTitle() ?></td>
-            <td><a target="_blank" rel="noopener" href="https://justauth.me/p/<?= $page->getRoute() ?>">/p/<?= $page->getRoute() ?></a></td>
+            <td><a target="_blank" rel="noopener" href="https://justauth.me/p/<?= $page->getRoute() . (!$page->isPublished() ? '?render_key=' . JAM_WEBSITE_PAGE_RENDERING_KEY : '') ?>">/p/<?= $page->getRoute() ?></a></td>
             <td><?= $page->getViews() ?></td>
             <td><?= date('Y-m-d H:i:s', $page->getCreatedAt()) ?></td>
             <td><?= date('Y-m-d H:i:s', $page->getUpdatedAt()) ?></td>
