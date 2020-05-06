@@ -1,0 +1,21 @@
+.edit-icon {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #eee;
+}
+
+.edit-icon i {
+    color: #555;
+}
+
+label[for=avatar] {
+    cursor: pointer;
+}

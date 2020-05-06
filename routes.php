@@ -10,6 +10,7 @@ const ROUTES = [
     'home' => 'home',
     'login' => 'login',
     'logout' => 'logout',
+    'profile' => 'profile',
     'core' => [
         'users' => 'users',
         'apps' => 'apps',

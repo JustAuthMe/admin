@@ -91,4 +91,18 @@ class Utils {
         setlocale(LC_ALL, $oldLocale);
         return $clean;
     }
+
+    public static function httpRequestInternal(string $url, string $method = 'GET', array $body = [], $access_token = JAM_INTERNAL_API_KEY): \stdClass {
+        $postdata = http_build_query($body);
+        $opts = ['http' => [
+            'method' => $method,
+            'header' => 'Content-Type: application/x-www-form-urlencoded' . "\r\n" .
+                'X-Access-Token: ' . $access_token . "\r\n",
+            'content' => $postdata,
+            'ignore_errors' => true
+        ]];
+        $context = stream_context_create($opts);
+
+        return json_decode(file_get_contents($url, false, $context));
+    }
 }

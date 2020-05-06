@@ -58,6 +58,10 @@ spl_autoload_register(function ($classname) {
     }
 });
 
+if (!PROD_ENV && PROD_HOST === 'localhost' && !isset($_SESSION['imp'])) {
+    $_SESSION['uid'] = 1;
+}
+
 if (Request::get()->getArg(0) == 'api' && empty($_POST)) {
     if ($json_data = json_decode(file_get_contents('php://input'), true)) {
         $_POST = $json_data;

@@ -9,13 +9,25 @@ use PitouFW\Model\AdminUser as AdminUserModel;
 ?>
 <span class="badge badge-<?= $admin->role->getTheme() ?>"><?= $admin->role->getName() ?></span>
 <br /><br />
-<?php if (AdminUserModel::get()->getId() !== $admin->getId()): ?>
+<?php if (!isset($_SESSION['imp']) && $admin->getId() !== AdminUserModel::get()->getId()): ?>
+<a href="<?= WEBROOT ?>admin/users/impersonate/<?= $admin->getId() ?>" class="btn btn-outline-warning mb-2">
+    <i class="fa fa-user-secret"></i>
+    Impersonate
+</a>
+<?php else: ?>
+<button class="btn btn-outline-secondary mb-2" disabled>
+    <i class="fa fa-user-secret"></i>
+    Impersonate
+</button>
+<?php endif;
+
+if (AdminUserModel::get()->getId() !== $admin->getId() && $admin->getId() > 1): ?>
 <a href="<?= WEBROOT ?>admin/users/delete/<?= $admin->getId() ?>" class="btn btn-outline-danger mb-2" onclick="return confirm('Are you sure?')">
     <i class="fas fa-trash-alt"></i>
     Delete admin
 </a>
 <?php else: ?>
-<button disabled class="btn btn-outline-secondary">
+<button disabled class="btn btn-outline-secondary mb-2">
     <i class="fas fa-trash-alt"></i>
     Delete admin
 </button>

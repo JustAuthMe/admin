@@ -59,7 +59,7 @@ use PitouFW\Entity\AdminRole;
             </td>
             <td><?= date('Y-m-d H:i:s', $permission->getTimestamp()) ?></td>
             <td>
-                <?php if ($permission->getId() != 1): ?>
+                <?php if ($permission->getId() > 1): ?>
                 <a href="<?= WEBROOT ?>admin/permissions/revoke/<?= $permission->getId() ?>" class="btn btn-outline-danger" onclick="confirm('Are you sure?')">
                     <i class="fas fa-trash-alt"></i>
                     Revoke

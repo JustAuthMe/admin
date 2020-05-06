@@ -31,8 +31,8 @@ use PitouFW\Entity\CoreClientApp;
             <input type="text" class="form-control" name="domain" id="domain" required value="<?= $app->getDomain() ?>" />
         </div>
         <div class="form-group col-md-6">
-            <label for="data">Data:</label>
-            <input type="text" class="form-control" disabled id="data" value="<?= implode(', ', json_decode(html_entity_decode($app->getData()))) ?>" />
+            <label for="secret">Secret:</label>
+            <input type="text" class="form-control" disabled id="secret" value="<?= $app->getSecret() ?>" />
         </div>
     </div>
     <div class="form-row">
@@ -41,8 +41,8 @@ use PitouFW\Entity\CoreClientApp;
             <input type="url" class="form-control" name="redirect_url" id="redirect_url" required value="<?= $app->getRedirectUrl() ?>" />
         </div>
         <div class="form-group col-md-6">
-            <label for="secret">Secret:</label>
-            <input type="text" class="form-control" disabled id="secret" value="<?= $app->getSecret() ?>" />
+            <label for="data">Data:</label>
+            <input type="text" class="form-control" name="data" id="data" value="<?= implode(', ', json_decode(html_entity_decode($app->getData()))) ?>" />
         </div>
     </div>
     <div class="form-group">

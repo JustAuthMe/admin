@@ -1,6 +1,7 @@
 <?php
 
 use PitouFW\Core\Alert;
+use PitouFW\Core\Persist;
 use PitouFW\Core\Request as R;
 use PitouFW\Model\AdminPermission as P;
 use PitouFW\Model\AdminUser;
@@ -23,6 +24,7 @@ use PitouFW\Model\AdminUser;
 
     <!-- Custom styles for this template-->
     <link href="<?= ASSETS ?>css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?= CSS ?>style.css" rel="stylesheet">
 
     <!-- Bootstrap core JavaScript-->
     <script src="<?= ASSETS ?>vendor/jquery/jquery.min.js"></script>
@@ -214,14 +216,12 @@ use PitouFW\Model\AdminUser;
                         </div>
                     </li>
 
-                    <!-- Nav Item - Messages -->
+                    <!-- Nav Item - Messages
                     <li class="nav-item dropdown no-arrow mx-1">
                         <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-envelope fa-fw"></i>
-                            <!-- Counter - Messages -->
                             <span class="badge badge-danger badge-counter">7</span>
                         </a>
-                        <!-- Dropdown - Messages -->
                         <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
                             <h6 class="dropdown-header">
                                 Message Center
@@ -270,7 +270,7 @@ use PitouFW\Model\AdminUser;
                         </div>
                     </li>
 
-                    <div class="topbar-divider d-none d-sm-block"></div>
+                    <div class="topbar-divider d-none d-sm-block"></div> -->
 
                     <!-- Nav Item - User Information -->
                     <li class="nav-item dropdown no-arrow">
@@ -280,18 +280,14 @@ use PitouFW\Model\AdminUser;
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="<?= WEBROOT ?>profile">
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Profile
-                            </a>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Settings
                             </a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Logout
+                                <?= isset($_SESSION['imp']) && Persist::exists('AdminUser', 'id', $_SESSION['imp']) ? 'Stop impersonation' : 'Logout' ?>
                             </a>
                         </div>
                     </li>

@@ -13,7 +13,7 @@ use PitouFW\Model\AdminUser;
 switch (Request::get()->getArg(2)) {
     case 'revoke':
         if (Persist::exists('AdminPermission', 'id', Request::get()->getArg(3))) {
-            if (Request::get()->getArg(3) != 1) {
+            if (Request::get()->getArg(3) > 1) {
                 Persist::deleteById('AdminPermission', Request::get()->getArg(3));
                 Alert::success('Permission revoked successfully');
             } else {

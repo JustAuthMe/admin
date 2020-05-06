@@ -10,7 +10,7 @@ use PitouFW\Model\AdminUser as AdminUserModel;
 
 switch (Request::get()->getArg(2)) {
     case 'details':
-        if (Persist::exists('AdminUser', 'id', Request::get()->getArg(3))) {
+        if (Persist::exists('AdminUser', 'id', Request::get()->getArg(3)) && (Request::get()->getArg(3) > 1 || AdminUserModel::get()->getId() == 1)) {
             /** @var AdminUser $admin */
             $admin = Persist::read('AdminUser', Request::get()->getArg(3));
 
@@ -52,11 +52,40 @@ switch (Request::get()->getArg(2)) {
         }
         break;
 
+    case 'impersonate':
+        if (Persist::exists('AdminUser', 'id', Request::get()->getArg(3))) {
+            if (!isset($_SESSION['imp'])) {
+                if (Request::get()->getArg(3) !== AdminUserModel::get()->getId()) {
+                    if (Request::get()->getArg(3) > 1) {
+                        $_SESSION['uid'] = Request::get()->getArg(3);
+                        $_SESSION['imp'] = AdminUserModel::get()->getId();
+
+                        Alert::success('You are now using the Admin Panel as ' . AdminUserModel::get()->getFirstname() . ' ' . AdminUserModel::get()->getLastname() . '!');
+                        header('location: ' . WEBROOT);
+                        die;
+                    } else {
+                        Alert::error('You can\'t impersonate the Super Admin.');
+                    }
+                } else {
+                    Alert::error('You can\'t impersonate yourself.');
+                }
+            } else {
+                Alert::error('You are already impersonating ' . AdminUserModel::get()->getFirstname());
+            }
+        }
+
+        header('location: ' . WEBROOT . 'admin/users');
+        die;
+
     case 'delete':
         if (Persist::exists('AdminUser', 'id', Request::get()->getArg(3))) {
             if (AdminUserModel::get()->getId() !== Request::get()->getArg(3)) {
-                Persist::deleteById('AdminUser', Request::get()->getArg(3));
-                Alert::success('Admin deleted successfully.');
+                if (Request::get()->getArg(3) > 1) {
+                    Persist::deleteById('AdminUser', Request::get()->getArg(3));
+                    Alert::success('Admin deleted successfully.');
+                } else {
+                    Alert::error('You can\'t delete the Super Admin.');
+                }
             } else {
                 Alert::error('You can\'t delete yourself.');
             }

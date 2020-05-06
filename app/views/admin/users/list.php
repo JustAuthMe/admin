@@ -1,6 +1,7 @@
 <?php
 
 use PitouFW\Entity\AdminUser;
+use PitouFW\Model\AdminUser as AdminUserModel;
 
 ?>
 <table class="table table-striped" id="users">
@@ -26,10 +27,17 @@ use PitouFW\Entity\AdminUser;
             <td><span class="badge badge-<?= $user->role->getTheme() ?>"><?= $user->role->getName() ?></span></td>
             <td><?= Date('Y-m-d H:i:s', $user->getRegTimestamp()) ?></td>
             <td>
+                <?php if ($user->getId() > 1 || AdminUserModel::get()->getId() == 1): ?>
                 <a href="<?= WEBROOT ?>admin/users/details/<?= $user->getId() ?>" class="btn btn-outline-primary">
                     <i class="fas fa-edit"></i>
                     Details
                 </a>
+                <?php else: ?>
+                <button disabled class="btn btn-outline-secondary">
+                    <i class="fas fa-edit"></i>
+                    Details
+                </button>
+                <?php endif ?>
             </td>
         </tr>
     <?php endforeach ?>

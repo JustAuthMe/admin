@@ -9,6 +9,8 @@ use PitouFW\Core\Persist;
 use PitouFW\Core\Request;
 
 class AdminUser {
+    const ALLOWED_AVATAR_EXTENSIONS = ['jpg', 'jpeg', 'png'];
+
     public static function isLogged() {
         return isset($_SESSION['uid']) && Persist::exists('AdminUser', 'id', $_SESSION['uid']);
     }
@@ -33,7 +35,7 @@ class AdminUser {
         $role_id = self::get()->getRoleId();
         $route = $route === null ? implode('/', Request::get()->getArgs()) : $route;
 
-        if (AdminPermission::exists($role_id, '*') || AdminPermission::exists($role_id, $route) || AdminPermission::exists($role_id, $route . '/*')) {
+        if (preg_match("#^\/?profile#", $route) || AdminPermission::exists($role_id, '*') || AdminPermission::exists($role_id, $route) || AdminPermission::exists($role_id, $route . '/*')) {
             return true;
         }
 

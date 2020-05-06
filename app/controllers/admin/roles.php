@@ -60,15 +60,19 @@ switch (Request::get()->getArg(2)) {
             /** @var AdminRole $role */
             $role = Persist::read('AdminRole', Request::get()->getArg(3));
 
-            if (POST && $role->getId() !== $_POST['new_role'] && Persist::exists('AdminRole', 'id', $_POST['new_role'])) {
-                AdminUser::updateRoles($role->getId(), $_POST['new_role']);
-                AdminInvitation::updateRoles($role->getId(), $_POST['new_role']);
-                Persist::delete($role);
-                Alert::success('Role deleted successfully');
+            if ($role->getId() > 1) {
+                if (POST && $role->getId() !== $_POST['new_role'] && Persist::exists('AdminRole', 'id', $_POST['new_role'])) {
+                    AdminUser::updateRoles($role->getId(), $_POST['new_role']);
+                    AdminInvitation::updateRoles($role->getId(), $_POST['new_role']);
+                    Persist::delete($role);
+                    Alert::success('Role deleted successfully');
+                } else {
+                    Alert::error('Invalid new role');
+                    header('location: ' . WEBROOT . 'admin/roles/details/' . $role->getId());
+                    die;
+                }
             } else {
-                Alert::error('Invalid new role');
-                header('location: ' . WEBROOT . 'admin/roles/details/' . $role->getId());
-                die;
+                Alert::error('You can\'t delete the Admin role.');
             }
         }
 

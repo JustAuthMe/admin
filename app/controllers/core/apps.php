@@ -5,23 +5,91 @@ use PitouFW\Core\Controller;
 use PitouFW\Core\Data;
 use PitouFW\Core\Persist;
 use PitouFW\Core\Request;
+use PitouFW\Core\Utils;
 use PitouFW\Entity\ConsoleTeam;
 use PitouFW\Entity\CoreClientApp;
 use PitouFW\Model\CoreClientApp as CoreClientAppModel;
 
+function fromDataStringToArray(string $data) {
+    return explode(',', strtolower(str_replace(' ', '', $data)));
+}
+
+function checkDataString(string $data) {
+    $data = fromDataStringToArray($data);
+    $is_data_ok = true;
+    foreach ($data as $d) {
+        $d = strpos($d, '!') === strlen($d) - 1 ? substr($d, 0, -1) : $d;
+        if (!in_array($d, DATA_LIST)) {
+            $is_data_ok = $d;
+            break;
+        }
+    }
+
+    return $is_data_ok;
+}
+
 switch (Request::get()->getArg(2)) {
+    case 'new':
+        if (POST) {
+            if ($_POST['name'] !== '' && $_FILES['logo']['size'] > 0 && $_POST['domain'] !== '' && $_POST['redirect_url'] !== '' && $_POST['data'] !== '') {
+                $is_data_ok = checkDataString($_POST['data']);
+                if ($is_data_ok === true) {
+                    $dataurl = 'data:image/' . pathinfo($_FILES['logo']['name'], PATHINFO_EXTENSION) . ';base64,' . base64_encode(file_get_contents($_FILES['logo']['tmp_name']));
+                    $static_call = Utils::httpRequestInternal(JAM_STATIC_API, 'POST', [
+                        'file[name]' => $_FILES['logo']['name'],
+                        'file[url]' => $dataurl
+                    ], 'VtMgEK2C0fI+63pnhdLldkTQBLmpxWxQ6ikRzR9jkwSXf8ESheKmkia4bPjeGO8E');
+
+                    if ($static_call->status === 'success') {
+                        $response = Utils::httpRequestInternal(JAM_API . 'client_app', 'POST', [
+                            'domain' => $_POST['domain'],
+                            'name' => $_POST['name'],
+                            'logo' => $static_call->url,
+                            'redirect_url' => $_POST['redirect_url'],
+                            'data' => json_encode(fromDataStringToArray($_POST['data']))
+                        ]);
+
+                        if ($response->status === 'success') {
+                            Alert::success('Client app created successfully');
+                            header('location: ' . WEBROOT . 'core/apps');
+                            die;
+                        } else {
+                            Alert::error('Core API returned "' . $response->message . '".');
+                        }
+                    } else {
+                        Alert::error('Static API returned "' . $static_call->message . '"');
+                    }
+                } else {
+                    unset($_POST['data']);
+                    Alert::error('Data "' . $is_data_ok . '" does not exists. Allowed data: ' . implode(', ', DATA_LIST));
+                }
+            }
+        }
+
+        Data::get()->add('TITLE', 'New client app');
+        Data::get()->add('posted', $_POST);
+        Controller::renderView('core/apps/new');
+        break;
+
     case 'details':
         if (Persist::exists('CoreClientApp', 'id', Request::get()->getArg(3))) {
             /** @var CoreClientApp $app */
             $app = Persist::read('CoreClientApp', Request::get()->getArg(3));
 
             if (POST) {
-                if ($_POST['name'] !== '' && $_POST['domain'] !== '' && $_POST['redirect_url'] !== '') {
+                if ($_POST['name'] !== '' && $_POST['domain'] !== '' && $_POST['redirect_url'] !== '' && $_POST['data'] !== '') {
                     $app->setName($_POST['name']);
                     $app->setDomain($_POST['domain']);
                     $app->setRedirectUrl($_POST['redirect_url']);
+
+                    $is_data_ok = checkDataString($_POST['data']);
+                    if ($is_data_ok === true) {
+                        Alert::success('Changes saved successfully.');
+                    } else {
+                        unset($_POST['data']);
+                        Alert::error('Data "' . $is_data_ok . '" does not exists. Allowed data: ' . implode(', ', DATA_LIST));
+                    }
                     Persist::update($app);
-                    Alert::success('Changes saved successfully.');
                 } else {
                     Alert::error('All fields must be filled.');
                 }

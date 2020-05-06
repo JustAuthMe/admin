@@ -7,7 +7,7 @@ use PitouFW\Entity\AdminRole;
 ?>
 <form action="<?= WEBROOT ?>admin/roles/delete/<?= $role->getId() ?>" method="post" onsubmit="return confirm('Are you sure?')">
     <div class="form-inline mb-2">
-        <select name="new_role" class="form-control mr-2" required>
+        <select name="new_role" <?= $role->getId() <= 1 ? 'disabled' : '' ?> class="form-control mr-2" required>
             <option value="">New role for <?= $role->getName() ?>s</option>
             <?php foreach ($roles as $new_role):
                 /** @var AdminRole $new_role */
@@ -16,7 +16,7 @@ use PitouFW\Entity\AdminRole;
             <?php endif;
             endforeach; ?>
         </select>
-        <button type="submit" class="btn btn-outline-danger">
+        <button type="submit" <?= $role->getId() <= 1 ? 'disabled' : '' ?> class="btn btn-outline-<?= $role->getId() > 1 ? 'danger' : 'secondary' ?>">
             <i class="fas fa-trash-alt"></i>
             Delete role
         </button>

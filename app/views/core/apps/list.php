@@ -3,6 +3,10 @@
 use PitouFW\Entity\CoreClientApp;
 
 ?>
+<a href="<?= WEBROOT ?>core/apps/new" class="btn btn-success mb-4">
+    <i class="fa fa-plus"></i>
+    New client app
+</a>
 <table class="table table-striped" id="apps">
     <thead>
         <tr>
@@ -21,12 +25,16 @@ use PitouFW\Entity\CoreClientApp;
             <td><?= $app->getId() ?></td>
             <td><img src="<?= $app->getLogo() ?>" style="height:40px;width:40px;border-radius:20px" /></td>
             <td><?= $app->getName() ?></td>
-            <td><a href="https://<?= $app->getDomain() ?>"><?= $app->getDomain() ?></a></td>
+            <td><a href="https://<?= $app->getDomain() ?>" target="_blank" rel="noopener"><?= $app->getDomain() ?></a></td>
             <td><?= $app->getAppId() ?></td>
             <td>
                 <a href="<?= WEBROOT ?>core/apps/details/<?= $app->getId() ?>" class="btn btn-outline-primary">
                     <i class="fas fa-edit"></i>
                     Details
+                </a>
+                <a href="https://core.justauth.me/auth?app_id=<?= $app->getAppId() ?>&redirect_url=<?= urlencode($app->getRedirectUrl()) ?>" target="_blank" rel="noopener" class="btn btn-outline-success">
+                    <i class="fa fa-user-check"></i>
+                    Login
                 </a>
             </td>
         </tr>
