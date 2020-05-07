@@ -1,4 +1,4 @@
-slugify = str => {
+const slugify = str => {
     str = str.replace(/^\s+|\s+$/g, ''); // trim
     str = str.toLowerCase();
 
@@ -15,3 +15,5 @@ slugify = str => {
 
     return str.replace(/^-+|-+$/g, ''); // trim -
 };
+
+const processMarkdown = () => document.getElementById('preview').innerHTML = markdown.toHTML(document.getElementById('pitch_content').value);

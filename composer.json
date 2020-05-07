@@ -9,6 +9,7 @@
   "require": {
     "ext-json": "*",
     "ext-pdo": "*",
-    "ext-openssl": "*"
+    "ext-openssl": "*",
+        "erusev/parsedown": "^1.7"
   }
 }

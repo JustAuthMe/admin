@@ -24,6 +24,10 @@ const ROUTES = [
     'website' => [
         'pages' => 'pages'
     ],
+    'prospects' => [
+        'manager' => 'manager',
+        'pitch-mails' => 'pitch_mails'
+    ],
     'admin' => [
         'users' => 'users',
         'roles' => 'roles',

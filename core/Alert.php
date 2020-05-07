@@ -16,6 +16,10 @@ class Alert {
         self::alert('success', $message);
     }
 
+    public static function warning($message) {
+        self::alert('warning', $message);
+    }
+
     public static function error($message) {
         self::alert('error', $message);
     }
@@ -25,10 +29,12 @@ class Alert {
             return;
         }
 
-        $type = $_SESSION['alert']['type'] === 'success' ? 'success' : 'danger';
-        $isError = $type !== 'success';
+        $type = $_SESSION['alert']['type'];
+        $theme = $type === 'error' ? 'danger' : ($type === 'warning' ? 'warning' : ($type === 'success' ? 'success' : 'info'));
+        $isError = $type === 'error';
+        $isWarning = $type === 'warning';
         $message = $_SESSION['alert']['message'];
-        $html = '<div class="alert alert-' . $type . ' mb-5">' . ($isError ? 'Error : ' : '') . $message . '</div>';
+        $html = '<div class="alert alert-' . $theme . ' mb-5">' . ($isError ? 'Error : ' : ($isWarning ? 'Warning : ' : '')) . $message . '</div>';
 
         unset($_SESSION['alert']);
         return $html;

@@ -19,3 +19,12 @@
 label[for=avatar] {
     cursor: pointer;
 }
+
+.preview {
+    border: 1px solid #d1d3e2;
+    border-radius: .35rem;
+    background-color: white;
+    padding: .375rem .75rem;
+    color: black;
+    font-family: Helvetica, Verdana, sans-serif;
+}

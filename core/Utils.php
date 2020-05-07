@@ -2,6 +2,7 @@
 
 namespace PitouFW\Core;
 
+use i18n;
 use ReflectionClass;
 use ReflectionProperty;
 

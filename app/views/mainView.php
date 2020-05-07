@@ -117,11 +117,26 @@ use PitouFW\Model\AdminUser;
             <div id="collapseThree" class="collapse <?= R::r('website') ? 'show' : '' ?>" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item <?= R::r('website/pages') ? 'active' : '' ?>" href="<?= WEBROOT ?>website/pages">Static pages</a>
-                    <!-- <a class="collapse-item <?= R::r('website/pricing') ? 'active' : '' ?>" href="<?= WEBROOT ?>website/pricing">Price plans</a>
-                    <a class="collapse-item <?= R::r('website/settings') ? 'active' : '' ?>" href="<?= WEBROOT ?>website/settings">Settings</a> -->
                 </div>
             </div>
         </li>
+        <?php endif ?>
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <?php if (P::p(['prospects/manage'])): ?>
+            <li class="nav-item <?= R::r('prospects') ? 'active' : '' ?>">
+                <a class="nav-link <?= !R::r('prospects') ? 'collapsed' : '' ?>" href="#" data-toggle="collapse" data-target="#collapseFour"
+                   aria-expanded="<?= R::r('prospects') ? 'true' : 'false' ?>>" aria-controls="collapseFour">
+                    <i class="fas fa-fw fa-user-tie"></i>
+                    <span>Prospects</span>
+                </a>
+                <div id="collapseFour" class="collapse <?= R::r('prospects') ? 'show' : '' ?>" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item <?= R::r('prospects/pitch-mails') ? 'active' : '' ?>" href="<?= WEBROOT ?>prospects/pitch-mails">Pitch e-mails</a>
+                        <a class="collapse-item <?= R::r('prospects/manager') ? 'active' : '' ?>" href="<?= WEBROOT ?>prospects/manager">Management</a>
+                    </div>
+                </div>
+            </li>
         <?php endif ?>
 
         <!-- Nav Item - Pages Collapse Menu -->
@@ -140,12 +155,12 @@ use PitouFW\Model\AdminUser;
         <!-- Nav Item - Pages Collapse Menu -->
         <?php if (P::p(['admin/users','admin/roles','admin/permission','admin/invitations'])): ?>
         <li class="nav-item <?= R::r('admin') ? 'active' : '' ?>">
-            <a class="nav-link <?= !R::r('admin') ? 'collapsed' : '' ?>" href="#" data-toggle="collapse" data-target="#collapseFour"
-               aria-expanded="<?= R::r('admin') ? 'ture' : 'false' ?>" aria-controls="collapseFour">
+            <a class="nav-link <?= !R::r('admin') ? 'collapsed' : '' ?>" href="#" data-toggle="collapse" data-target="#collapseAdmin"
+               aria-expanded="<?= R::r('admin') ? 'ture' : 'false' ?>" aria-controls="collapseAdmin">
                 <i class="fas fa-fw fa-wrench"></i>
                 <span>Admin panel</span>
             </a>
-            <div id="collapseFour" class="collapse <?= R::r('admin') ? 'show' : '' ?>" data-parent="#accordionSidebar">
+            <div id="collapseAdmin" class="collapse <?= R::r('admin') ? 'show' : '' ?>" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item <?= R::r('admin/users') ? 'active' : '' ?>" href="<?= WEBROOT ?>admin/users">Users</a>
                     <a class="collapse-item <?= R::r('admin/roles') ? 'active' : '' ?>" href="<?= WEBROOT ?>admin/roles">Roles</a>
@@ -356,6 +371,7 @@ use PitouFW\Model\AdminUser;
 
 <!-- Custom scripts for all pages-->
 <script src="<?= ASSETS ?>js/sb-admin-2.min.js"></script>
+<script src="<?= JS ?>markdown.min.js"></script>
 <script src="<?= JS ?>script.js"></script>
 
 </body>
