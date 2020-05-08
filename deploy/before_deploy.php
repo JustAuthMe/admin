@@ -34,6 +34,7 @@ $env_vars = [
 
     'JAM_INTERNAL_API_KEY' => 'string',
     'JAM_ALERT_API' => 'string',
+    'JAM_STATIC_API' => 'string',
     'JAM_WEBSITE_PAGE_RENDERING_KEY' => 'string',
 
     'DEPLOYED_REF' => 'CI_COMMIT_REF_NAME',
