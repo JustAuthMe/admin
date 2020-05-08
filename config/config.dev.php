@@ -28,12 +28,12 @@ const REDIS_HOST = '127.0.0.1';
 const REDIS_PORT = 6379;
 const REDIS_PASS = '';
 
-const JAM_API = 'https://beta.justauth.me/api/';
-const JAM_SECRET = 'xxxxxxxxxxxxx';
+const JAM_API = 'http://localhost/JustAuth.Me/core/public/api/';
+const JAM_SECRET = 'xxxxx';
 
 const JAM_INTERNAL_API_KEY = 'xxxxx';
-const JAM_ALERT_API = 'http://192.168.0.9/JustAuth.Me/alert/';
-const JAM_STATIC_API = 'https://192.168.0.9/JustAuth.Me/static/api/media/';
+const JAM_ALERT_API = 'http://localhost/JustAuth.Me/alert/';
+const JAM_STATIC_API = 'http://localhost/JustAuth.Me/static/api/media/';
 const JAM_WEBSITE_PAGE_RENDERING_KEY = 'xxxxx';
 
 const DEPLOYED_REF = 'NA';
