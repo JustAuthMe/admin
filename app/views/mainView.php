@@ -71,7 +71,7 @@ use PitouFW\Model\AdminUser;
         </div> -->
 
         <!-- Nav Item - Utilities Collapse Menu -->
-        <?php if (P::p(['core/users','core/apps'])): ?>
+        <?php if (P::p(['core/users','core/apps','core/alert'])): ?>
         <li class="nav-item <?= R::r('core') ? 'active' : '' ?>">
             <a class="nav-link <?= !R::r('core') ? 'collapsed' : '' ?>" href="#" data-toggle="collapse" data-target="#collapseOne"
                aria-expanded="<?= R::r('core') ? 'true' : 'false' ?>" aria-controls="collapseOne">
@@ -123,7 +123,23 @@ use PitouFW\Model\AdminUser;
         <?php endif ?>
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <?php if (P::p(['prospects/manage'])): ?>
+        <?php if (P::p(['newsletter/subscribers'])): ?>
+            <li class="nav-item <?= R::r('newsletter') ? 'active' : '' ?>">
+                <a class="nav-link <?= !R::r('newsletter') ? 'collapsed' : '' ?>" href="#" data-toggle="collapse" data-target="#collapseFive"
+                   aria-expanded="<?= R::r('newsletter') ? 'true' : 'false' ?>>" aria-controls="collapseFive">
+                    <i class="fas fa-fw fa-newspaper"></i>
+                    <span>Newsletter</span>
+                </a>
+                <div id="collapseFive" class="collapse <?= R::r('newsletter/subscribers') ? 'show' : '' ?>" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item <?= R::r('newsletter/subscribers') ? 'active' : '' ?>" href="<?= WEBROOT ?>newsletter/subscribers">Subscribers</a>
+                    </div>
+                </div>
+            </li>
+        <?php endif ?>
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <?php if (P::p(['prospects/pitch-mails','prospects/manager'])): ?>
             <li class="nav-item <?= R::r('prospects') ? 'active' : '' ?>">
                 <a class="nav-link <?= !R::r('prospects') ? 'collapsed' : '' ?>" href="#" data-toggle="collapse" data-target="#collapseFour"
                    aria-expanded="<?= R::r('prospects') ? 'true' : 'false' ?>>" aria-controls="collapseFour">

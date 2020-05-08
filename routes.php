@@ -28,6 +28,9 @@ const ROUTES = [
         'manager' => 'manager',
         'pitch-mails' => 'pitch_mails'
     ],
+    'newsletter' => [
+        'subscribers' => 'subscribers'
+    ],
     'admin' => [
         'users' => 'users',
         'roles' => 'roles',
