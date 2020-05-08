@@ -49,8 +49,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $('#users').DataTable({
-            order: [],
-            searching: false
+            order: []
         });
     });
 </script>

@@ -15,6 +15,7 @@ use PitouFW\Entity\CoreClientApp;
             <th>Name</th>
             <th>Domain name</th>
             <th>Identifier (app_id)</th>
+            <th>Mode</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -27,6 +28,11 @@ use PitouFW\Entity\CoreClientApp;
             <td><?= $app->getName() ?></td>
             <td><a href="https://<?= $app->getDomain() ?>" target="_blank" rel="noopener"><?= $app->getDomain() ?></a></td>
             <td><?= $app->getAppId() ?></td>
+            <td>
+                <span class="badge badge-<?= $app->isDev() ? 'warning' : 'success' ?>">
+                    <?= $app->isDev() ? 'Development' : 'Production' ?>
+                </span>
+            </td>
             <td>
                 <a href="<?= WEBROOT ?>core/apps/details/<?= $app->getId() ?>" class="btn btn-outline-primary">
                     <i class="fas fa-edit"></i>

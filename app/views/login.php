@@ -34,9 +34,11 @@
                         <div class="col-lg-6">
                             <div class="p-5">
                                 <div class="text-center">
-                                    <img src="<?= IMG ?>logo_big.png" style="width:300px;padding:10px 40px;background-color:#3498db;border-radius:40px" />
+                                    <img src="<?= IMG ?>logo_big.png" style="width:300px;max-width:100%;padding:10px 40px;background-color:#3498db;border-radius:40px" />
                                     <br /><br />
                                     <img src="<?= $qr ?>" />
+                                    <br /><br />
+                                    <a href="jam://<?= $token ?>" class="btn btn-primary">Login on mobile</a>
                                 </div>
                             </div>
                         </div>

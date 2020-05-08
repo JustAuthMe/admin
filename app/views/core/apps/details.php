@@ -45,6 +45,10 @@ use PitouFW\Entity\CoreClientApp;
             <input type="text" class="form-control" name="data" id="data" value="<?= implode(', ', json_decode(html_entity_decode($app->getData()))) ?>" />
         </div>
     </div>
+    <div class="form-group form-check">
+        <input type="checkbox" <?= $app->isDev() ? 'checked' : '' ?> class="form-check-input" name="dev" id="dev" value="1" />
+        <label for="dev" class="form-check-label">Dev mode</label>
+    </div>
     <div class="form-group">
         <button type="submit" class="btn btn-success">
             <i class="fas fa-check-circle"></i>

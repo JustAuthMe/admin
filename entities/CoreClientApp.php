@@ -16,11 +16,12 @@ class CoreClientApp implements Resourceable {
     private $logo;
     private $redirect_url;
     private $data;
+    private $dev;
     private $public_key;
     private $secret;
     private $hash_key;
 
-    public function __construct($id = 0, $domain = '', $app_id = '', $name = '', $logo = '', $redirect_url = '', $data = '', $public_key = '', $secret = '', $hash_key = '') {
+    public function __construct($id = 0, $domain = '', $app_id = '', $name = '', $logo = '', $redirect_url = '', $data = '', $dev = '', $public_key = '', $secret = '', $hash_key = '') {
         $this->id = $id;
         $this->domain = $domain;
         $this->app_id = $app_id;
@@ -28,6 +29,7 @@ class CoreClientApp implements Resourceable {
         $this->logo = $logo;
         $this->redirect_url = $redirect_url;
         $this->data = $data;
+        $this->dev = $dev;
         $this->public_key = $public_key;
         $this->secret = $secret;
         $this->hash_key = $hash_key;
@@ -95,6 +97,18 @@ class CoreClientApp implements Resourceable {
 
     public function setData($data) {
         $this->data = $data;
+    }
+
+    public function getDev() {
+        return $this->dev;
+    }
+
+    public function isDev(): bool {
+        return !!$this->getDev();
+    }
+
+    public function setDev($dev) {
+        $this->dev = $dev;
     }
 
     public function getPublicKey() {

@@ -46,7 +46,8 @@ switch (Request::get()->getArg(2)) {
                             'name' => $_POST['name'],
                             'logo' => $static_call->url,
                             'redirect_url' => $_POST['redirect_url'],
-                            'data' => json_encode(fromDataStringToArray($_POST['data']))
+                            'data' => json_encode(fromDataStringToArray($_POST['data'])),
+                            'dev' => isset($_POST['dev']) ? '1' : '0'
                         ]);
 
                         if ($response->status === 'success') {
@@ -81,6 +82,7 @@ switch (Request::get()->getArg(2)) {
                     $app->setName($_POST['name']);
                     $app->setDomain($_POST['domain']);
                     $app->setRedirectUrl($_POST['redirect_url']);
+                    $app->setDev(isset($_POST['dev']) ? 1 : 0);
 
                     $is_data_ok = checkDataString($_POST['data']);
                     if ($is_data_ok === true) {
