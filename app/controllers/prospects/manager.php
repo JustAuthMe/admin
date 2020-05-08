@@ -23,8 +23,12 @@ switch (Request::get()->getArg(2)) {
                         $prospect->setName($_POST['name']);
                         Alert::success('Prospect updated successfully!');
 
-                        if (Persist::exists('AdminPitchMail', 'lang', $_POST['lang'])) {
+                        if ($_POST['lang'] !== $prospect->getLang() && Persist::exists('AdminPitchMail', 'lang', $_POST['lang'])) {
                             $prospect->setLang($_POST['lang']);
+                            /** @var AdminPitchMail $pitch */
+                            $pitch = Persist::readBy('AdminPitchMail', 'lang', $_POST['lang']);
+                            $prospect->setMailSubject($pitch->getSubject());
+                            $prospect->setMailContent($pitch->getContent());
                         } else {
                             Alert::warning('Unknown lang.');
                         }

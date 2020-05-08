@@ -57,8 +57,8 @@ switch (Request::get()->getArg(2)) {
             if (!isset($_SESSION['imp'])) {
                 if (Request::get()->getArg(3) !== AdminUserModel::get()->getId()) {
                     if (Request::get()->getArg(3) > 1) {
-                        $_SESSION['uid'] = Request::get()->getArg(3);
                         $_SESSION['imp'] = AdminUserModel::get()->getId();
+                        $_SESSION['uid'] = Request::get()->getArg(3);
 
                         Alert::success('You are now using the Admin Panel as ' . AdminUserModel::get()->getFirstname() . ' ' . AdminUserModel::get()->getLastname() . '!');
                         header('location: ' . WEBROOT);
