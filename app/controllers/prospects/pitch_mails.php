@@ -78,6 +78,7 @@ switch (Request::get()->getArg(2)) {
                     if (Request::get()->getArg(4) === 'test') {
                         $parser = new Parsedown();
                         $postdata = [
+                            'from' => AdminUser::get()->getFirstname() . ' • JustAuthMe <' . AdminUser::get()->getEmail() . '>',
                             'to' => AdminUser::get()->getEmail(),
                             'subject' => $pitch->getSubject(),
                             'body' => str_replace("\n", '',

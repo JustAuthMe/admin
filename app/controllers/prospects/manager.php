@@ -130,7 +130,7 @@ switch (Request::get()->getArg(2)) {
                     Alert::success('Pitch e-mail successfully updated!');
 
                     $postdata = [
-                        'to' => '',
+                        'from' => AdminUser::get()->getFirstname() . ' • JustAuthMe <' . AdminUser::get()->getEmail() . '>',
                         'subject' => $prospect->getMailSubject(),
                         'body' => str_replace("\n", '',
                             str_replace('{{name}}', $prospect->getName(),
@@ -159,23 +159,29 @@ switch (Request::get()->getArg(2)) {
 
                         case 'send':
                             if ($prospect->getStatus() !== AdminProspectModel::STATUS_INCOMPLETE) {
-                                $prospect->setStatus(AdminProspectModel::STATUS_NEGOTIATING);
-                                if ($prospect->getAssignedId() === null) {
-                                    $prospect->setAssignedId(AdminUser::get()->getId());
+                                if (!Persist::exists('CoreEmailBlacklist', 'email', Utils::hashEmail($prospect->getContactEmail()))) {
+                                    $prospect->setStatus(AdminProspectModel::STATUS_NEGOTIATING);
+                                    if ($prospect->getAssignedId() === null) {
+                                        $prospect->setAssignedId(AdminUser::get()->getId());
+                                    }
+                                    $postdata['to'] = $prospect->getContactEmail();
+                                    Utils::httpRequestInternal(
+                                        JAM_API . 'mailer/default',
+                                        'POST',
+                                        $postdata
+                                    );
+                                    Alert::success($prospect->getName() . ' pitch e-mail successfully sent at ' . $prospect->getContactEmail() . '!');
+                                } else {
+                                    $prospect->setStatus(AdminProspectModel::STATUS_DECLINED);
+                                    Alert::error('This prospect unsubscribed from our mailing lists. We cannot contact them anymore.');
                                 }
-                                $postdata['to'] = $prospect->getContactEmail();
-                                Utils::httpRequestInternal(
-                                    JAM_API . 'mailer/default',
-                                    'POST',
-                                    $postdata
-                                );
-                                Alert::success($prospect->getName() . ' pitch e-mail successfully sent at ' . $prospect->getContactEmail() . '!');
                             } else {
                                 Alert::error('You can\'t approach a prospect without knowing its e-mail address.');
                             }
                             break;
                     }
 
+                    $prospect->setUpdatedAt(date('Y-m-d H:i:s'));
                     Persist::update($prospect);
                 } else {
                     Alert::error('The pitch e-mail content connat be left empty.');

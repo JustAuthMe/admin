@@ -106,4 +106,8 @@ class Utils {
 
         return json_decode(file_get_contents($url, false, $context));
     }
+
+    public static function hashEmail($email) {
+        return self::hashInfo(strtolower($email));
+    }
 }
