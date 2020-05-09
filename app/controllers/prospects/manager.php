@@ -210,54 +210,58 @@ switch (Request::get()->getArg(2)) {
     default:
         if (POST) {
             if ($_POST['name'] !== '') {
-                $prospect = new AdminProspect(
-                    0,
-                    $_POST['name'],
-                    null,
-                    '',
-                    '',
-                    '',
-                    '',
-                    '',
-                    AdminUser::get()->getId()
-                );
-                Alert::success('Prospect successfully created!');
+                if (!Persist::exists('AdminProspect', 'name', $_POST['name'])) {
+                    $prospect = new AdminProspect(
+                        0,
+                        $_POST['name'],
+                        null,
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        AdminUser::get()->getId()
+                    );
+                    Alert::success('Prospect successfully created!');
 
-                if ($_POST['model_id'] !== '') {
-                    if (Persist::exists('AdminPitchMail', 'id', $_POST['model_id'])) {
-                        /** @var AdminPitchMail $pitch */
-                        $pitch = Persist::readBy('AdminPitchMail', 'id', $_POST['model_id']);
+                    if ($_POST['model_id'] !== '') {
+                        if (Persist::exists('AdminPitchMail', 'id', $_POST['model_id'])) {
+                            /** @var AdminPitchMail $pitch */
+                            $pitch = Persist::readBy('AdminPitchMail', 'id', $_POST['model_id']);
 
-                        $prospect->setModelId($pitch->getId());
-                        $prospect->setMailSubject($pitch->getSubject());
-                        $prospect->setMailContent($pitch->getContent());
-                    } else {
-                        Alert::warning('Unknown model.');
+                            $prospect->setModelId($pitch->getId());
+                            $prospect->setMailSubject($pitch->getSubject());
+                            $prospect->setMailContent($pitch->getContent());
+                        } else {
+                            Alert::warning('Unknown model.');
+                        }
                     }
-                }
 
-                if ($_POST['url'] !== '') {
-                    if (filter_var($_POST['url'], FILTER_VALIDATE_URL)) {
-                        $prospect->setUrl($_POST['url']);
-                    } else {
-                        Alert::warning('Website must be an valid URL.');
+                    if ($_POST['url'] !== '') {
+                        if (filter_var($_POST['url'], FILTER_VALIDATE_URL)) {
+                            $prospect->setUrl($_POST['url']);
+                        } else {
+                            Alert::warning('Website must be an valid URL.');
+                        }
                     }
-                }
 
-                if ($_POST['contact_email'] !== '') {
-                    if (filter_var($_POST['contact_email'], FILTER_VALIDATE_EMAIL)) {
-                        $prospect->setContactEmail($_POST['contact_email']);
-                        $prospect->setStatus(AdminProspectModel::STATUS_PENDING);
-                    } else {
-                        Alert::warning('Contact E-Mail must be valid.');
+                    if ($_POST['contact_email'] !== '') {
+                        if (filter_var($_POST['contact_email'], FILTER_VALIDATE_EMAIL)) {
+                            $prospect->setContactEmail($_POST['contact_email']);
+                            $prospect->setStatus(AdminProspectModel::STATUS_PENDING);
+                        } else {
+                            Alert::warning('Contact E-Mail must be valid.');
+                        }
                     }
-                }
 
-                if ($_POST['contact_name'] !== '') {
-                    $prospect->setContactName($_POST['contact_name']);
-                }
+                    if ($_POST['contact_name'] !== '') {
+                        $prospect->setContactName($_POST['contact_name']);
+                    }
 
-                Persist::create($prospect);
+                    Persist::create($prospect);
+                } else {
+                    Alert::error('A prospect with the name "' . htmlentities($_POST['name']) . '" already exists.');
+                }
             } else {
                 Alert::error('A new prospect must at least have a name and a model.');
             }
