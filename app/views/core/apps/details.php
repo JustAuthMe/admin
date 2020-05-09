@@ -22,7 +22,7 @@ use PitouFW\Entity\CoreClientApp;
         </div>
         <div class="form-group col-md-6">
             <label for="app_id">Identifier (app_id):</label>
-            <input type="text" class="form-control" disabled id="app_id" value="<?= $app->getAppId() ?>" />
+            <input type="text" class="form-control" readonly id="app_id" value="<?= $app->getAppId() ?>" />
         </div>
     </div>
     <div class="form-row">
@@ -32,7 +32,7 @@ use PitouFW\Entity\CoreClientApp;
         </div>
         <div class="form-group col-md-6">
             <label for="secret">Secret:</label>
-            <input type="text" class="form-control" disabled id="secret" value="<?= $app->getSecret() ?>" />
+            <input type="text" class="form-control" readonly id="secret" value="<?= $app->getSecret() ?>" />
         </div>
     </div>
     <div class="form-row">

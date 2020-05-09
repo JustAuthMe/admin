@@ -25,7 +25,7 @@ use PitouFW\Entity\AdminUser;
         </div>
         <div class="form-group col-md-6">
             <label for="role">Role:</label>
-            <input type="text" disabled id="role" value="<?= $user->role->getName() ?>" class="form-control" />
+            <input type="text" readonly id="role" value="<?= $user->role->getName() ?>" class="form-control" />
         </div>
     </div>
     <div class="form-row">

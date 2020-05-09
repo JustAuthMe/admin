@@ -5,34 +5,47 @@ use PitouFW\Core\Controller;
 use PitouFW\Core\Data;
 use PitouFW\Core\Persist;
 use PitouFW\Core\Request;
+use PitouFW\Core\Utils;
 use PitouFW\Entity\AdminPitchMail;
 use PitouFW\Model\AdminUser;
 
 switch (Request::get()->getArg(2)) {
     case 'new':
         if (POST) {
-            if ($_POST['lang'] !== '' && $_POST['subject'] !== '' && $_POST['button'] !== '' && $_POST['content'] !== '') {
+            if ($_POST['lang'] !== '' && $_POST['label'] !== '' && $_POST['subject'] !== '' && $_POST['content'] !== '') {
                 $pitch = new AdminPitchMail(
                     0,
                     $_POST['lang'],
+                    $_POST['label'],
                     $_POST['subject'],
                     $_POST['content'],
-                    $_POST['button'],
+                    '',
+                    '',
                     null,
                     AdminUser::get()->getId()
                 );
+                Alert::success('Pitch e-mail created successfully!');
+
+                if ($_POST['button_text'] !== '' || $_POST['button_link'] !== '') {
+                    if ($_POST['button_text'] !== '' && $_POST['button_link'] !== '') {
+                        $pitch->setButtonText($_POST['button_text']);
+                        $pitch->setButtonLink($_POST['button_link']);
+                    } else {
+                        Alert::warning('You need to fill Call to action text AND link or left them both empty.');
+                    }
+                }
 
                 Persist::create($pitch);
-                Alert::success('Pitch e-mail created successfully!');
                 header('location: ' . WEBROOT . 'prospects/pitch-mails');
                 die;
             } else {
-                Alert::error('All fields must be filled.');
+                Alert::error('All required fields must be filled.');
             }
         }
 
         Data::get()->add('TITLE', 'New pitch e-mail');
         Data::get()->add('parser', new Parsedown());
+        Data::get()->add('posted', $_POST);
         Controller::renderView('prospects/pitch_mails/new');
         break;
 
@@ -42,17 +55,52 @@ switch (Request::get()->getArg(2)) {
             $pitch = Persist::read('AdminPitchMail', Request::get()->getArg(3));
 
             if (POST) {
-                if ($_POST['subject'] !== '' && $_POST['button'] !== '' && $_POST['content'] !== '' ) {
+                if ($_POST['label'] !== '' && $_POST['subject'] !== '' && $_POST['content'] !== '') {
+                    $pitch->setLabel($_POST['label']);
                     $pitch->setSubject($_POST['subject']);
                     $pitch->setContent($_POST['content']);
-                    $pitch->setButton($_POST['button']);
                     $pitch->setUpdatedAt(date('Y-m-d H:i:s'));
                     $pitch->setUpdaterId(AdminUser::get()->getId());
+                    Alert::success('Pitch e-mail updated successfully!');
+
+                    if (
+                        ($_POST['button_text'] !== '' && $_POST['button_link'] !== '') ||
+                        ($_POST['button_text'] === '' && $_POST['button_link'] === '')
+                    ) {
+                        $pitch->setButtonText($_POST['button_text']);
+                        $pitch->setButtonLink($_POST['button_link']);
+                    } else {
+                        Alert::warning('You need to fill Call to action text AND link or left them both empty.');
+                    }
 
                     Persist::update($pitch);
-                    Alert::success('Pitch e-mail updated successfully!');
+
+                    if (Request::get()->getArg(4) === 'test') {
+                        $parser = new Parsedown();
+                        $postdata = [
+                            'to' => AdminUser::get()->getEmail(),
+                            'subject' => $pitch->getSubject(),
+                            'body' => str_replace("\n", '',
+                                str_replace('{{fullname}}', AdminUser::get()->getFirstname() . ' ' . AdminUser::get()->getLastname(),
+                                    str_replace('{{firstname}}', AdminUser::get()->getFirstname(), $parser->text($pitch->getContent()))
+                                )
+                            )
+                        ];
+
+                        if ($pitch->getButtonText() !== '' && $pitch->getButtonLink() !== '') {
+                            $postdata['call_to_action[title]'] = $pitch->getButtonText();
+                            $postdata['call_to_action[link]'] = $pitch->getButtonLink();
+                        }
+
+                        Utils::httpRequestInternal(
+                            JAM_API . 'mailer/default',
+                            'POST',
+                            $postdata
+                        );
+                        Alert::success('Pitch e-mail successfully tested at ' . AdminUser::get()->getEmail() . '!');
+                    }
                 } else {
-                    Alert::error('Subject and content cannot be left empty');
+                    Alert::error('All required fields must be filled.');
                 }
             }
 

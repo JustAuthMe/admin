@@ -12,18 +12,22 @@ use PitouFW\Core\Resourceable;
 class AdminPitchMail implements Resourceable {
     private $id;
     private $lang;
+    private $label;
     private $subject;
     private $content;
-    private $button;
+    private $button_text;
+    private $button_link;
     private $updated_at;
     private $updater_id;
 
-    public function __construct($id = 0, $lang = '', $subject = '', $content='', $button = '', $updated_at = null, $updater_id = 0) {
+    public function __construct($id = 0, $lang = '', $label = '', $subject = '', $content='', $button_text = '', $button_link = '', $updated_at = null, $updater_id = 0) {
         $this->id = $id;
         $this->lang = $lang;
+        $this->label = $label;
         $this->subject = $subject;
         $this->content = $content;
-        $this->button = $button;
+        $this->button_text = $button_text;
+        $this->button_link = $button_link;
         $this->updated_at = $updated_at;
         $this->setUpdaterId($updater_id);
     }
@@ -52,6 +56,14 @@ class AdminPitchMail implements Resourceable {
         $this->lang = $lang;
     }
 
+    public function getLabel() {
+        return $this->label;
+    }
+
+    public function setLabel($label) {
+        $this->label = $label;
+    }
+
     public function getSubject() {
         return $this->subject;
     }
@@ -68,12 +80,20 @@ class AdminPitchMail implements Resourceable {
         $this->content = $content;
     }
 
-    public function getButton() {
-        return $this->button;
+    public function getButtonText() {
+        return $this->button_text;
     }
 
-    public function setButton($button) {
-        $this->button = $button;
+    public function setButtonText($button_text) {
+        $this->button_text = $button_text;
+    }
+
+    public function getButtonLink() {
+        return $this->button_link;
+    }
+
+    public function setButtonLink($button_link) {
+        $this->button_link = $button_link;
     }
 
     public function getUpdatedAt() {

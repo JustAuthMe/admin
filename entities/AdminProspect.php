@@ -13,7 +13,7 @@ use PitouFW\Model\AdminProspect as AdminProspectModel;
 class AdminProspect implements Resourceable {
     private $id;
     private $name;
-    private $lang;
+    private $model_id;
     private $url;
     private $contact_email;
     private $contact_name;
@@ -24,10 +24,10 @@ class AdminProspect implements Resourceable {
     private $status;
     private $updated_at;
 
-    public function __construct($id = 0, $name = '', $lang = '', $url = '', $contact_email = '', $contact_name = '', $mail_subject = '', $mail_content = '', $creator_id = 0, $assigned_id = null, $status = AdminProspectModel::STATUS_INCOMPLETE, $updated_at = null) {
+    public function __construct($id = 0, $name = '', $model_id = null, $url = '', $contact_email = '', $contact_name = '', $mail_subject = '', $mail_content = '', $creator_id = 0, $assigned_id = null, $status = AdminProspectModel::STATUS_INCOMPLETE, $updated_at = null) {
         $this->id = $id;
         $this->name = $name;
-        $this->lang = $lang;
+        $this->setModelId($model_id);
         $this->url = $url;
         $this->contact_email = $contact_email;
         $this->contact_name = $contact_name;
@@ -63,12 +63,15 @@ class AdminProspect implements Resourceable {
         $this->name = $name;
     }
 
-    public function getLang() {
-        return $this->lang;
+    public function getModelId() {
+        return $this->model_id;
     }
 
-    public function setLang($lang) {
-        $this->lang = $lang;
+    public function setModelId($model_id) {
+        $this->model_id = $model_id;
+        if (Persist::exists('AdminPitchMail', 'id', $model_id)) {
+            $this->model = Persist::read('AdminPitchMail', $model_id);
+        }
     }
 
     public function getUrl() {

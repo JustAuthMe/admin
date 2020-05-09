@@ -9,11 +9,11 @@ use PitouFW\Model\AdminProspect as AdminProspectModel;
 <form action="" method="post">
     <div class="form-inline mb-2">
         <input type="text" name="name" required placeholder="Name" class="form-control mr-2" />
-        <select name="lang" class="form-control mr-2" required>
-            <option value="">Lang</option>
-            <?php foreach ($pitch_mails as $pitch_mail):
-            /** @var AdminPitchMail $pitch_mail */ ?>
-            <option value="<?= $pitch_mail->getLang() ?>"><?= $pitch_mail->getLang() ?></option>
+        <select name="model_id" class="form-control mr-2">
+            <option value="">Model (optional)</option>
+            <?php foreach ($pitch_mails as $pitch):
+            /** @var AdminPitchMail $pitch */ ?>
+            <option value="<?= $pitch->getId() ?>"><?= $pitch->getLang() . ' - ' . $pitch->getLabel() ?></option>
             <?php endforeach ?>
         </select>
         <input type="url" name="url" placeholder="https://website (optional)" class="form-control mr-2" />
@@ -32,7 +32,7 @@ use PitouFW\Model\AdminProspect as AdminProspectModel;
         <tr>
             <th>#</th>
             <th>Name</th>
-            <th>Lang</th>
+            <th>Model</th>
             <th>E-Mail address</th>
             <th>Contact name</th>
             <th>Added by</th>
@@ -53,7 +53,7 @@ use PitouFW\Model\AdminProspect as AdminProspectModel;
                 <?= $prospect->getName() ?>
                 <?php endif ?>
             </td>
-            <td><?= $prospect->getLang() ?></td>
+            <td><?= $prospect->getModelId() !== null ? $prospect->model->getLang() . ' - ' . $prospect->model->getLabel() : 'None' ?></td>
             <td>
                 <a href="mailto:<?= $prospect->getContactEmail() ?>">
                     <?= $prospect->getContactEmail() ?>

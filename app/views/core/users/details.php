@@ -27,7 +27,7 @@ use PitouFW\Entity\CoreUser;
         </div>
         <div class="form-group col-md-6">
             <label for="username">Account N° (jam_id):</label>
-            <input class="form-control" type="text" disabled value="<?= $user->getUsername() ?>" id="username" />
+            <input class="form-control" type="text" readonly value="<?= $user->getUsername() ?>" id="username" />
         </div>
     </div>
     <div class="form-row">
@@ -47,11 +47,11 @@ use PitouFW\Entity\CoreUser;
         <div class="form-group col-md-6">
             <div class="form-group">
                 <label form="ip_address">Registration IP:</label>
-                <input class="form-control" type="text" disabled value="<?= $user->getIpAddress() ?>" id="ip_address" />
+                <input class="form-control" type="text" readonly value="<?= $user->getIpAddress() ?>" id="ip_address" />
             </div>
             <div class="form-group">
                 <label for="timestamp">Registered at:</label>
-                <input class="form-control" type="text" disabled value="<?= $user->getTimestamp() ?>" id="timestamp" />
+                <input class="form-control" type="text" readonly value="<?= $user->getTimestamp() ?>" id="timestamp" />
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-success"><i class="fas fa-check-circle"></i> Save changes</button>

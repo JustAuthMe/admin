@@ -18,7 +18,7 @@ use PitouFW\Entity\ConsoleTeam;
         </div>
         <div class="form-group col-md-6">
             <label for="user_id">Creator:</label>
-            <input type="text" id="user_id" class="form-control" disabled value="<?= $team->user->getFullname() ?>" />
+            <input type="text" id="user_id" class="form-control" readonly value="<?= $team->user->getFullname() ?>" />
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-success">

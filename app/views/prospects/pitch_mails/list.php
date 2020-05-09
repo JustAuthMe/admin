@@ -13,6 +13,7 @@ use PitouFW\Entity\AdminPitchMail;
         <tr>
             <th>#</th>
             <th>Lang</th>
+            <th>Label</th>
             <th>Subject</th>
             <th>Updated at</th>
             <th>Updated by</th>
@@ -25,6 +26,7 @@ use PitouFW\Entity\AdminPitchMail;
         <tr>
             <td><?= $pitch->getId() ?></td>
             <td><?= $pitch->getLang() ?></td>
+            <td><?= $pitch->getLabel() ?></td>
             <td><?= $pitch->getSubject() ?></td>
             <td><?= $pitch->getUpdatedAt() ?></td>
             <td><?= $pitch->updater->getFirstname() . ' ' . $pitch->updater->getLastname() ?></td>

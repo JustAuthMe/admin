@@ -19,18 +19,23 @@ switch (Request::get()->getArg(2)) {
 
             if (POST) {
                 if ($prospect->getAssignedId() === null || $prospect->getAssignedId() === AdminUser::get()->getId()) {
-                    if ($_POST['name'] !== '' && $_POST['lang'] !== '' && $_POST['status'] !== '') {
+                    if ($_POST['name'] !== '' && $_POST['status'] !== '') {
                         $prospect->setName($_POST['name']);
+                        $prospect->setContactName($_POST['contact_name']);
                         Alert::success('Prospect updated successfully!');
 
-                        if ($_POST['lang'] !== $prospect->getLang() && Persist::exists('AdminPitchMail', 'lang', $_POST['lang'])) {
-                            $prospect->setLang($_POST['lang']);
-                            /** @var AdminPitchMail $pitch */
-                            $pitch = Persist::readBy('AdminPitchMail', 'lang', $_POST['lang']);
-                            $prospect->setMailSubject($pitch->getSubject());
-                            $prospect->setMailContent($pitch->getContent());
-                        } else {
-                            Alert::warning('Unknown lang.');
+                        if ($_POST['model_id'] !== $prospect->getModelid()) {
+                            if (Persist::exists('AdminPitchMail', 'id', $_POST['model_id'])) {
+                                $prospect->setModelid($_POST['model_id']);
+                                /** @var AdminPitchMail $pitch */
+                                $pitch = Persist::readBy('AdminPitchMail', 'id', $_POST['model_id']);
+                                $prospect->setMailSubject($pitch->getSubject());
+                                $prospect->setMailContent($pitch->getContent());
+                            } elseif ($_POST['model_id'] === '') {
+                                $prospect->setModelId(null);
+                            } else {
+                                Alert::warning('Unknown model.');
+                            }
                         }
 
                         $status_manual_override = false;
@@ -39,19 +44,13 @@ switch (Request::get()->getArg(2)) {
                             $status_manual_override = true;
                         }
 
-                        if ($_POST['contact_email'] !== '') {
-                            if (filter_var($_POST['contact_email'], FILTER_VALIDATE_EMAIL)) {
-                                $prospect->setContactEmail($_POST['contact_email']);
-                                if ($prospect->getStatus() === AdminProspectModel::STATUS_INCOMPLETE && !$status_manual_override) {
-                                    $prospect->setStatus(AdminProspectModel::STATUS_PENDING);
-                                }
-                            } else {
-                                Alert::warning('Please provide a valid e-mail address.');
+                        if ($_POST['contact_email'] === '' || filter_var($_POST['contact_email'], FILTER_VALIDATE_EMAIL)) {
+                            $prospect->setContactEmail($_POST['contact_email']);
+                            if ($_POST['contact_email'] !== '' && $prospect->getStatus() === AdminProspectModel::STATUS_INCOMPLETE && !$status_manual_override) {
+                                $prospect->setStatus(AdminProspectModel::STATUS_PENDING);
                             }
-                        }
-
-                        if ($_POST['contact_name'] !== '') {
-                            $prospect->setContactName($_POST['contact_name']);
+                        } else {
+                            Alert::warning('Please provide a valid e-mail address.');
                         }
 
                         if ($_POST['url'] !== '') {
@@ -68,7 +67,7 @@ switch (Request::get()->getArg(2)) {
 
                         Persist::update($prospect);
                     } else {
-                        Alert::error('Name, lang and status cannot be left empty.');
+                        Alert::error('Name, model and status cannot be left empty.');
                     }
                 } else {
                     Alert::error('Only ' . $prospect->assigned->getFirstname() . ' ' . $prospect->assigned->getLastname() . ' can update this prospect.');
@@ -107,7 +106,7 @@ switch (Request::get()->getArg(2)) {
             Data::get()->add('prospect', $prospect);
             Data::get()->add('admins', Persist::fetchAll('AdminUser'));
             Data::get()->add('statuses', $statuses);
-            Data::get()->add('pitch_mails', Persist::fetchAll('AdminPitchMail', "ORDER BY id DESC"));
+            Data::get()->add('pitch_mails', Persist::fetchAll('AdminPitchMail', "ORDER BY lang, label"));
             Data::get()->add('parser', new Parsedown());
             Controller::renderView('prospects/manager/details');
         } else {
@@ -121,7 +120,7 @@ switch (Request::get()->getArg(2)) {
             /** @var AdminProspect $prospect */
             $prospect = Persist::read('AdminProspect', Request::get()->getArg(3));
             /** @var AdminPitchMail $pitch */
-            $pitch = Persist::readBy('AdminPitchMail', 'lang', $prospect->getLang());
+            $pitch = Persist::readBy('AdminPitchMail', 'id', $prospect->getModelid());
             $parser = new Parsedown();
 
             if ($prospect->getAssignedId() === null || $prospect->getAssignedId() === AdminUser::get()->getId()) {
@@ -139,10 +138,13 @@ switch (Request::get()->getArg(2)) {
                                     str_replace('{{firstname}}', AdminUser::get()->getFirstname(), $parser->text($prospect->getMailContent()))
                                 )
                             )
-                        ),
-                        'call_to_action[title]' => $pitch->getButton(),
-                        'call_to_action[link]' => 'mailto:partnership@justauth.me?subject=Re: ' . $prospect->getMailSubject()
+                        )
                     ];
+
+                    if ($pitch->getButtonText() !== '' && $pitch->getButtonLink() !== '') {
+                        $postdata['call_to_action[title]'] = $pitch->getButtonText();
+                        $postdata['call_to_action[link]'] = $pitch->getButtonLink();
+                    }
 
                     switch (Request::get()->getArg(4)) {
                         case 'test':
@@ -152,7 +154,7 @@ switch (Request::get()->getArg(2)) {
                                 'POST',
                                 $postdata
                             );
-                            Alert::success('Pitch e-mail successfully tested at ' . AdminUser::get()->getEmail() . '!');
+                            Alert::success($prospect->getName() . ' pitch e-mail successfully tested at ' . AdminUser::get()->getEmail() . '!');
                             break;
 
                         case 'send':
@@ -167,7 +169,7 @@ switch (Request::get()->getArg(2)) {
                                     'POST',
                                     $postdata
                                 );
-                                Alert::success('Pitch e-mail successfully sent at ' . $prospect->getContactEmail() . '!');
+                                Alert::success($prospect->getName() . ' pitch e-mail successfully sent at ' . $prospect->getContactEmail() . '!');
                             } else {
                                 Alert::error('You can\'t approach a prospect without knowing its e-mail address.');
                             }
@@ -194,11 +196,11 @@ switch (Request::get()->getArg(2)) {
         if (Persist::exists('AdminProspect', 'id', Request::get()->getArg(3))) {
             /** @var AdminProspect $prospect */
             $prospect = Persist::read('AdminProspect', Request::get()->getArg(3));
-            if ($prospect->getStatus() === AdminProspectModel::STATUS_INCOMPLETE || $prospect->getStatus() === AdminProspectModel::STATUS_PENDING) {
+            if ($prospect->getAssignedId() === null || $prospect->getAssignedId() == AdminUser::get()->getId()) {
                 Persist::delete($prospect);
                 Alert::success('Prospect deleted successfully!');
             } else {
-                Alert::error('You can\'t delete an already approached prospect.');
+                Alert::error('Only ' . $prospect->assigned->getFirstname() . ' ' . $prospect->assigned->getLastname() . ' can delete this prospect.');
             }
         }
 
@@ -207,56 +209,62 @@ switch (Request::get()->getArg(2)) {
 
     default:
         if (POST) {
-            if ($_POST['name'] !== '' && $_POST['lang'] !== '') {
-                if (Persist::exists('AdminPitchMail' ,'lang', $_POST['lang'])) {
-                    /** @var AdminPitchMail $pitch_mail */
-                    $pitch_mail = Persist::readBy('AdminPitchMail', 'lang', $_POST['lang']);
+            if ($_POST['name'] !== '') {
+                $prospect = new AdminProspect(
+                    0,
+                    $_POST['name'],
+                    null,
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    AdminUser::get()->getId()
+                );
+                Alert::success('Prospect successfully created!');
 
-                    $prospect = new AdminProspect(
-                        0,
-                        $_POST['name'],
-                        $_POST['lang'],
-                        '',
-                        '',
-                        '',
-                        $pitch_mail->getSubject(),
-                        $pitch_mail->getContent(),
-                        AdminUser::get()->getId()
-                    );
-                    Alert::success('Prospect successfully created!');
+                if ($_POST['model_id'] !== '') {
+                    if (Persist::exists('AdminPitchMail', 'id', $_POST['model_id'])) {
+                        /** @var AdminPitchMail $pitch */
+                        $pitch = Persist::readBy('AdminPitchMail', 'id', $_POST['model_id']);
 
-                    if ($_POST['url'] !== '') {
-                        if (filter_var($_POST['url'], FILTER_VALIDATE_URL)) {
-                            $prospect->setUrl($_POST['url']);
-                        } else {
-                            Alert::warning('Website must be an valid URL.');
-                        }
+                        $prospect->setModelId($pitch->getId());
+                        $prospect->setMailSubject($pitch->getSubject());
+                        $prospect->setMailContent($pitch->getContent());
+                    } else {
+                        Alert::warning('Unknown model.');
                     }
-
-                    if ($_POST['contact_email'] !== '') {
-                        if (filter_var($_POST['contact_email'], FILTER_VALIDATE_EMAIL)) {
-                            $prospect->setContactEmail($_POST['contact_email']);
-                            $prospect->setStatus(AdminProspectModel::STATUS_PENDING);
-                        } else {
-                            Alert::warning('Contact E-Mail must be valid.');
-                        }
-                    }
-
-                    if ($_POST['contact_name'] !== '') {
-                        $prospect->setContactName($_POST['contact_name']);
-                    }
-
-                    Persist::create($prospect);
-                } else {
-                    Alert::error('Unknown lang.');
                 }
+
+                if ($_POST['url'] !== '') {
+                    if (filter_var($_POST['url'], FILTER_VALIDATE_URL)) {
+                        $prospect->setUrl($_POST['url']);
+                    } else {
+                        Alert::warning('Website must be an valid URL.');
+                    }
+                }
+
+                if ($_POST['contact_email'] !== '') {
+                    if (filter_var($_POST['contact_email'], FILTER_VALIDATE_EMAIL)) {
+                        $prospect->setContactEmail($_POST['contact_email']);
+                        $prospect->setStatus(AdminProspectModel::STATUS_PENDING);
+                    } else {
+                        Alert::warning('Contact E-Mail must be valid.');
+                    }
+                }
+
+                if ($_POST['contact_name'] !== '') {
+                    $prospect->setContactName($_POST['contact_name']);
+                }
+
+                Persist::create($prospect);
             } else {
-                Alert::error('A new prospect must at least have a name and a lang.');
+                Alert::error('A new prospect must at least have a name and a model.');
             }
         }
 
         Data::get()->add('TITLE', 'Prospects manager');
         Data::get()->add('prospects', Persist::fetchAll('AdminProspect', "ORDER BY updated_at DESC"));
-        Data::get()->add('pitch_mails', Persist::fetchAll('AdminPitchMail', "ORDER BY id DESC"));
+        Data::get()->add('pitch_mails', Persist::fetchAll('AdminPitchMail', "ORDER BY lang, label"));
         Controller::renderView('prospects/manager/list');
 }

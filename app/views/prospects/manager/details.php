@@ -20,22 +20,23 @@ use PitouFW\Entity\AdminUser;use PitouFW\Model\AdminProspect as AdminProspectMod
         </div>
         <div class="form-group col-md-6">
             <label for="contact_email">E-Mail address:</label>
-            <input type="email" name="contact_email" id="contact_email" class="form-control" placeholder="email@address" <?= $prospect->getUrl() !== '' ? 'required' : '' ?> value="<?= $prospect->getContactEmail() ?>" />
+            <input type="email" name="contact_email" id="contact_email" class="form-control" placeholder="email@address" value="<?= $prospect->getContactEmail() ?>" />
         </div>
     </div>
     <div class="form-row">
         <div class="form-group col-md-6">
-            <label for="lang">Lang:</label>
-            <select name="lang" id="lang" required class="form-control">
-                <?php foreach ($pitch_mails as $pitch_mail):
-                    /** @var AdminPitchMail $pitch_mail */ ?>
-                    <option value="<?= $pitch_mail->getLang() ?>" <?= $prospect->getLang() === $pitch_mail->getLang() ? 'selected' : '' ?>><?= $pitch_mail->getLang() ?></option>
+            <label for="model_id">Model:</label>
+            <select name="model_id" id="model_id" class="form-control">
+                <option value="">None</option>
+                <?php foreach ($pitch_mails as $pitch):
+                    /** @var AdminPitchMail $pitch */ ?>
+                    <option value="<?= $pitch->getId() ?>" <?= $prospect->getModelid() === $pitch->getId() ? 'selected' : '' ?>><?= $pitch->getLang() . ' - ' . $pitch->getLabel() ?></option>
                 <?php endforeach ?>
             </select>
         </div>
         <div class="form-group col-md-6">
             <label for="contact_name">Contact name:</label>
-            <input type="text" name="contact_name" id="contact_name" class="form-control" placeholder="John Doe" <?= $prospect->getUrl() !== '' ? 'required' : '' ?> value="<?= $prospect->getContactName() ?>" />
+            <input type="text" name="contact_name" id="contact_name" class="form-control" placeholder="John Doe" value="<?= $prospect->getContactName() ?>" />
         </div>
     </div>
     <div class="form-row">
