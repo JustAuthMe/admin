@@ -84,6 +84,7 @@ switch (Request::get()->getArg(2)) {
                 case AdminProspectModel::STATUS_TO_REMIND:
                 case AdminProspectModel::STATUS_DECLINED:
                     $statuses = [
+                        AdminProspectModel::STATUS_INCOMPLETE,
                         AdminProspectModel::STATUS_NEGOTIATING,
                         AdminProspectModel::STATUS_TO_REMIND,
                         AdminProspectModel::STATUS_ACCEPTED,
