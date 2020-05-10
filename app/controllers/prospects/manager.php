@@ -75,14 +75,11 @@ switch (Request::get()->getArg(2)) {
             }
 
             switch ($prospect->getStatus()) {
-                case AdminProspectModel::STATUS_INCOMPLETE:
-                    $statuses = [AdminProspectModel::STATUS_INCOMPLETE];
-                    break;
-
                 case AdminProspectModel::STATUS_PENDING:
                     $statuses = [AdminProspectModel::STATUS_PENDING];
                     break;
 
+                case AdminProspectModel::STATUS_INCOMPLETE:
                 case AdminProspectModel::STATUS_NEGOTIATING:
                 case AdminProspectModel::STATUS_TO_REMIND:
                 case AdminProspectModel::STATUS_DECLINED:

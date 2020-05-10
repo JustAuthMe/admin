@@ -23,7 +23,7 @@ class AdminProspect {
     const STATUS_LABEL = [
         'incomplete' => 'Incomplete',
         'pending' => 'Pending',
-        'negotiating' => 'Negocating',
+        'negotiating' => 'Negotiating',
         'to_remind' => 'To remind',
         'accepted' => 'Accepted',
         'declined' => 'Declined'
