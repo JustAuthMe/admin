@@ -14,8 +14,7 @@ function fromDataStringToArray(string $data) {
     return explode(',', strtolower(str_replace(' ', '', $data)));
 }
 
-function checkDataString(string $data) {
-    $data = fromDataStringToArray($data);
+function checkDataString(array $data) {
     $is_data_ok = true;
     foreach ($data as $d) {
         $d = strpos($d, '!') === strlen($d) - 1 ? substr($d, 0, -1) : $d;
@@ -32,7 +31,8 @@ switch (Request::get()->getArg(2)) {
     case 'new':
         if (POST) {
             if ($_POST['name'] !== '' && $_FILES['logo']['size'] > 0 && $_POST['domain'] !== '' && $_POST['redirect_url'] !== '' && $_POST['data'] !== '') {
-                $is_data_ok = checkDataString($_POST['data']);
+                $data = fromDataStringToArray($_POST['data']);
+                $is_data_ok = checkDataString($data);
                 if ($is_data_ok === true) {
                     $dataurl = 'data:image/' . pathinfo($_FILES['logo']['name'], PATHINFO_EXTENSION) . ';base64,' . base64_encode(file_get_contents($_FILES['logo']['tmp_name']));
                     $static_call = Utils::httpRequestInternal(JAM_STATIC_API, 'POST', [
@@ -46,7 +46,7 @@ switch (Request::get()->getArg(2)) {
                             'name' => $_POST['name'],
                             'logo' => $static_call->url,
                             'redirect_url' => $_POST['redirect_url'],
-                            'data' => json_encode(fromDataStringToArray($_POST['data'])),
+                            'data' => json_encode($data),
                             'dev' => isset($_POST['dev']) ? '1' : '0'
                         ]);
 
@@ -84,8 +84,10 @@ switch (Request::get()->getArg(2)) {
                     $app->setRedirectUrl($_POST['redirect_url']);
                     $app->setDev(isset($_POST['dev']) ? 1 : 0);
 
-                    $is_data_ok = checkDataString($_POST['data']);
+                    $data = fromDataStringToArray($_POST['data']);
+                    $is_data_ok = checkDataString($data);
                     if ($is_data_ok === true) {
+                        $app->setData(json_encode($data));
                         Alert::success('Changes saved successfully.');
                     } else {
                         unset($_POST['data']);
