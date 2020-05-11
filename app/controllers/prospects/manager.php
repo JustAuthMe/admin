@@ -94,8 +94,13 @@ switch (Request::get()->getArg(2)) {
         if (POST && Persist::exists('AdminProspect', 'id', Request::get()->getArg(3))) {
             /** @var AdminProspect $prospect */
             $prospect = Persist::read('AdminProspect', Request::get()->getArg(3));
-            /** @var AdminPitchMail $pitch */
-            $pitch = Persist::readBy('AdminPitchMail', 'id', $prospect->getModelid());
+
+            $pitch = null;
+            if ($prospect->getModelId() !== null) {
+                /** @var AdminPitchMail $pitch */
+                $pitch = Persist::readBy('AdminPitchMail', 'id', $prospect->getModelid());
+            }
+
             $parser = new Parsedown();
 
             if ($prospect->getAssignedId() === null || $prospect->getAssignedId() === AdminUser::get()->getId()) {
@@ -116,7 +121,7 @@ switch (Request::get()->getArg(2)) {
                         )
                     ];
 
-                    if ($pitch->getButtonText() !== '' && $pitch->getButtonLink() !== '') {
+                    if ($pitch !== null && $pitch->getButtonText() !== '' && $pitch->getButtonLink() !== '') {
                         $postdata['call_to_action[title]'] = $pitch->getButtonText();
                         $postdata['call_to_action[link]'] = $pitch->getButtonLink();
                     }
