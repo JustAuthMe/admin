@@ -65,6 +65,7 @@ switch (Request::get()->getArg(2)) {
                             $prospect->setAssignedId($_POST['assigned_id']);
                         }
 
+                        $prospect->setUpdatedAt(date('Y-m-d H:i:s'));
                         Persist::update($prospect);
                     } else {
                         Alert::error('Name, model and status cannot be left empty.');
