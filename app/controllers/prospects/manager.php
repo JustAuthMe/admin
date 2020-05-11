@@ -75,31 +75,7 @@ switch (Request::get()->getArg(2)) {
                 }
             }
 
-            switch ($prospect->getStatus()) {
-                case AdminProspectModel::STATUS_PENDING:
-                    $statuses = [AdminProspectModel::STATUS_PENDING];
-                    break;
-
-                case AdminProspectModel::STATUS_INCOMPLETE:
-                case AdminProspectModel::STATUS_NEGOTIATING:
-                case AdminProspectModel::STATUS_TO_REMIND:
-                case AdminProspectModel::STATUS_DECLINED:
-                    $statuses = [
-                        AdminProspectModel::STATUS_INCOMPLETE,
-                        AdminProspectModel::STATUS_NEGOTIATING,
-                        AdminProspectModel::STATUS_TO_REMIND,
-                        AdminProspectModel::STATUS_ACCEPTED,
-                        AdminProspectModel::STATUS_DECLINED
-                    ];
-                    break;
-
-                case AdminProspectModel::STATUS_ACCEPTED:
-                    $statuses = [AdminProspectModel::STATUS_ACCEPTED];
-                    break;
-
-                default:
-                    $statuses = array_keys(AdminProspectModel::STATUS_LABEL);
-            }
+            $statuses = array_keys(AdminProspectModel::STATUS_LABEL);
 
             Data::get()->add('TITLE', 'Details of prospect ' . $prospect->getName());
             Data::get()->add('prospect', $prospect);
