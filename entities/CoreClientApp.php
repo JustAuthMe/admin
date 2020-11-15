@@ -10,6 +10,7 @@ use PitouFW\Core\Resourceable;
 
 class CoreClientApp implements Resourceable {
     private $id;
+    private $url;
     private $domain;
     private $app_id;
     private $name;
@@ -21,8 +22,9 @@ class CoreClientApp implements Resourceable {
     private $secret;
     private $hash_key;
 
-    public function __construct($id = 0, $domain = '', $app_id = '', $name = '', $logo = '', $redirect_url = '', $data = '', $dev = '', $public_key = '', $secret = '', $hash_key = '') {
+    public function __construct($id = 0, $url = '', $domain = '', $app_id = '', $name = '', $logo = '', $redirect_url = '', $data = '', $dev = '', $public_key = '', $secret = '', $hash_key = '') {
         $this->id = $id;
+        $this->url = $url;
         $this->domain = $domain;
         $this->app_id = $app_id;
         $this->name = $name;
@@ -49,6 +51,14 @@ class CoreClientApp implements Resourceable {
 
     public function setId($id) {
         $this->id = $id;
+    }
+
+    public function getUrl() {
+        return $this->url;
+    }
+
+    public function setUrl($url) {
+        $this->url = $url;
     }
 
     public function getDomain() {
