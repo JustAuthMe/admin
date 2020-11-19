@@ -21,11 +21,9 @@ use PitouFW\Entity\ConsoleInvitation;
             <td><a href="mailto:<?= $invitation->getEmail() ?>"><?= $invitation->getEmail() ?></a></td>
             <td><a href="<?= WEBROOT ?>console/organizations/details/<?= $invitation->organization->getId() ?>"><?= $invitation->organization->getName() ?></a></td>
             <td>
-                <?php if ($invitation->getRole() == 1): ?>
-                <span class="badge badge-success">Developer</span>
-                <?php elseif ($invitation->getRole() == 10): ?>
+                <?php if ($invitation->getRole() == 10): ?>
                 <span class="badge badge-warning">Admin</span>
-                <?php elseif ($invitation->getRole() == 100): ?>
+                <?php elseif ($invitation->getRole() == 999): ?>
                 <span class="badge badge-danger">Owner</span>
                 <?php else: ?>
                 <span class="badge badge-primary">Member</span>

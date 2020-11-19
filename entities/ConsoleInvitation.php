@@ -35,7 +35,7 @@ class ConsoleInvitation implements Resourceable {
     }
 
     public static function getTableName(): string {
-        return 'invitation';
+        return 'invitations';
     }
 
     public function getId() {
