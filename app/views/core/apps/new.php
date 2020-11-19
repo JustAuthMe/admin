@@ -10,8 +10,8 @@
                 <input type="text" name="name" id="name" class="form-control" required placeholder="The app name" value="<?= $posted['name'] ?? '' ?>" />
             </div>
             <div class="form-group">
-                <label for="domain">Domain name:</label>
-                <input type="text" name="domain" id="domain" class="form-control" required placeholder="website.domain.com" value="<?= $posted['domain'] ?? '' ?>" />
+                <label for="url">URL:</label>
+                <input type="url" name="url" id="url" class="form-control" required placeholder="https://my-website.com" value="<?= $posted['url'] ?? '' ?>" />
             </div>
             <div class="form-group">
                 <label for="redirect_url">Callback URL:</label>

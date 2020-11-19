@@ -53,9 +53,11 @@ use PitouFW\Entity\AdminRole;
             </td>
             <td>https://admin.justauth.me/<?= $permission->getRoute() ?></td>
             <td>
+                <?php if ($permission->getUserId() !== null): ?>
                 <a href="<?= WEBROOT ?>admin/users/details/<?= $permission->user->getId() ?>">
                     <?= $permission->user->getFirstname() . ' ' . $permission->user->getLastname() ?>
                 </a>
+                <?php else: echo 'None'; endif; ?>
             </td>
             <td><?= date('Y-m-d H:i:s', $permission->getTimestamp()) ?></td>
             <td>

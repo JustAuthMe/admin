@@ -89,7 +89,7 @@ use PitouFW\Model\AdminUser;
         <?php endif ?>
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <?php if(P::p(['console/users','console/teams','console/invitation'])): ?>
+        <?php if(P::p(['console/users','console/organizations','console/invitation'])): ?>
         <li class="nav-item <?= R::r('console') ? 'active' : '' ?>">
             <a class="nav-link <?= !R::r('console') ? 'collapsed' : '' ?>" href="#" data-toggle="collapse" data-target="#collapseTwo"
                aria-expanded="<?= R::r('console') ? 'true' : 'false' ?>" aria-controls="collapseTwo">
@@ -99,7 +99,7 @@ use PitouFW\Model\AdminUser;
             <div id="collapseTwo" class="collapse <?= R::r('console') ? 'show' : '' ?>" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item <?= R::r('console/users') ? 'active' : '' ?>" href="<?= WEBROOT ?>console/users">Users</a>
-                    <a class="collapse-item <?= R::r('console/teams') ? 'active' : '' ?>" href="<?= WEBROOT ?>console/teams">Teams</a>
+                    <a class="collapse-item <?= R::r('console/organizations') ? 'active' : '' ?>" href="<?= WEBROOT ?>console/organizations">Organizations</a>
                     <a class="collapse-item <?= R::r('console/invitations') ? 'active' : '' ?>" href="<?= WEBROOT ?>console/invitations">Invitations</a>
                 </div>
             </div>

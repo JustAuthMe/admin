@@ -27,8 +27,8 @@ use PitouFW\Entity\CoreClientApp;
     </div>
     <div class="form-row">
         <div class="form-group col-md-6">
-            <label for="domain">Domain name:</label>
-            <input type="text" class="form-control" name="domain" id="domain" required value="<?= $app->getDomain() ?>" />
+            <label for="url">URL:</label>
+            <input type="urm" class="form-control" name="url" id="url" required value="<?= $app->getUrl() ?>" />
         </div>
         <div class="form-group col-md-6">
             <label for="secret">Secret:</label>

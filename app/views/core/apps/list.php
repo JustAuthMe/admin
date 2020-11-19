@@ -13,7 +13,7 @@ use PitouFW\Entity\CoreClientApp;
             <th>#</th>
             <th>Logo</th>
             <th>Name</th>
-            <th>Domain name</th>
+            <th>URL</th>
             <th>Identifier (app_id)</th>
             <th>Mode</th>
             <th>Actions</th>
@@ -26,7 +26,7 @@ use PitouFW\Entity\CoreClientApp;
             <td><?= $app->getId() ?></td>
             <td><img src="<?= $app->getLogo() ?>" style="height:40px;width:40px;border-radius:20px" /></td>
             <td><?= $app->getName() ?></td>
-            <td><a href="https://<?= $app->getDomain() ?>" target="_blank" rel="noopener"><?= $app->getDomain() ?></a></td>
+            <td><a href="<?= $app->getUrl() ?>" target="_blank" rel="noopener"><?= $app->getUrl() ?></a></td>
             <td><?= $app->getAppId() ?></td>
             <td>
                 <span class="badge badge-<?= $app->isDev() ? 'warning' : 'success' ?>">

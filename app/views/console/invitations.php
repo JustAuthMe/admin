@@ -8,7 +8,7 @@ use PitouFW\Entity\ConsoleInvitation;
         <tr>
             <th>#</th>
             <th>E-Mail address</th>
-            <th>Team</th>
+            <th>organization</th>
             <th>Role</th>
             <th>Actions</th>
         </tr>
@@ -19,7 +19,7 @@ use PitouFW\Entity\ConsoleInvitation;
         <tr>
             <td><?= $invitation->getId() ?></td>
             <td><a href="mailto:<?= $invitation->getEmail() ?>"><?= $invitation->getEmail() ?></a></td>
-            <td><a href="<?= WEBROOT ?>console/teams/details/<?= $invitation->team->getId() ?>"><?= $invitation->team->getName() ?></a></td>
+            <td><a href="<?= WEBROOT ?>console/organizations/details/<?= $invitation->organization->getId() ?>"><?= $invitation->organization->getName() ?></a></td>
             <td>
                 <?php if ($invitation->getRole() == 1): ?>
                 <span class="badge badge-success">Developer</span>

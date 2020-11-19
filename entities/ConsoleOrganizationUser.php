@@ -9,16 +9,16 @@ use PitouFW\Core\DB;
 use PitouFW\Core\Persist;
 use PitouFW\Core\Resourceable;
 
-class ConsoleTeamUser implements Resourceable {
+class ConsoleOrganizationUser implements Resourceable {
     private $id;
+    private $organization_id;
     private $user_id;
-    private $team_id;
     private $role;
 
-    public function __construct($id = 0, $user_id = 0, $team_id = 0, $role = 0) {
+    public function __construct($id = 0, $organization_id = 0, $user_id = 0, $role = 0) {
         $this->id = $id;
+        $this->setOrganizationId($organization_id);
         $this->setUserId($user_id);
-        $this->setTeamId($team_id);
         $this->role = $role;
     }
 
@@ -27,7 +27,7 @@ class ConsoleTeamUser implements Resourceable {
     }
 
     public static function getTableName(): string {
-        return 'team_user';
+        return 'organization_user';
     }
 
     public function getId() {
@@ -49,14 +49,14 @@ class ConsoleTeamUser implements Resourceable {
         }
     }
 
-    public function getTeamId() {
-        return $this->team_id;
+    public function getOrganizationId() {
+        return $this->organization_id;
     }
 
-    public function setTeamId($team_id) {
-        $this->team_id = $team_id;
-        if (Persist::exists('ConsoleTeam', 'id', $team_id)) {
-            $this->team = Persist::read('ConsoleTeam', $team_id);
+    public function setOrganizationId($organization_id) {
+        $this->organization_id = $organization_id;
+        if (Persist::exists('ConsoleOrganization', 'id', $organization_id)) {
+            $this->organization = Persist::read('ConsoleOrganization', $organization_id);
         }
     }
 

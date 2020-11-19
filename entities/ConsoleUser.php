@@ -11,18 +11,42 @@ use PitouFW\Core\Resourceable;
 class ConsoleUser implements Resourceable {
     private $id;
     private $email;
-    private $fullname;
     private $password;
+    private $remember_token;
+    private $created_at;
+    private $updated_at;
+    private $firstname;
+    private $lastname;
     private $jam_id;
-    private $validation_token;
+    private $email_token;
+    private $password_token;
 
-    public function __construct($id = 0, $email = '', $fullname = '', $password = '', $jam_id = null, $validation_token = null) {
+    /**
+     * ConsoleUser constructor.
+     * @param $id
+     * @param $email
+     * @param $password
+     * @param $remember_token
+     * @param $created_at
+     * @param $updated_at
+     * @param $firstname
+     * @param $lastname
+     * @param $jam_id
+     * @param $email_token
+     * @param $password_token
+     */
+    public function __construct($id = 0, $email = '', $password = '', $remember_token = '', $created_at = 0, $updated_at = 0, $firstname = '', $lastname = '', $jam_id = '', $email_token = '', $password_token = '') {
         $this->id = $id;
         $this->email = $email;
-        $this->fullname = $fullname;
         $this->password = $password;
+        $this->remember_token = $remember_token;
+        $this->created_at = $created_at;
+        $this->updated_at = $updated_at;
+        $this->firstname = $firstname;
+        $this->lastname = $lastname;
         $this->jam_id = $jam_id;
-        $this->validation_token = $validation_token;
+        $this->email_token = $email_token;
+        $this->password_token = $password_token;
     }
 
     public static function getDbInstance(): PDO {
@@ -30,7 +54,7 @@ class ConsoleUser implements Resourceable {
     }
 
     public static function getTableName(): string {
-        return 'user';
+        return 'users';
     }
 
     public function getId() {
@@ -49,20 +73,52 @@ class ConsoleUser implements Resourceable {
         $this->email = $email;
     }
 
-    public function getFullname() {
-        return $this->fullname;
-    }
-
-    public function setFullname($fullname) {
-        $this->fullname = $fullname;
-    }
-
     public function getPassword() {
         return $this->password;
     }
 
     public function setPassword($password) {
         $this->password = $password;
+    }
+
+    public function getRememberToken() {
+        return $this->remember_token;
+    }
+
+    public function setRememberToken($remember_token) {
+        $this->remember_token = $remember_token;
+    }
+
+    public function getCreatedAt() {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt($created_at) {
+        $this->created_at = $created_at;
+    }
+
+    public function getUpdatedAt() {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt($updated_at) {
+        $this->updated_at = $updated_at;
+    }
+
+    public function getFirstname() {
+        return $this->firstname;
+    }
+
+    public function setFirstname($firstname) {
+        $this->firstname = $firstname;
+    }
+
+    public function getLastname() {
+        return $this->lastname;
+    }
+
+    public function setLastname($lastname) {
+        $this->lastname = $lastname;
     }
 
     public function getJamId() {
@@ -73,11 +129,19 @@ class ConsoleUser implements Resourceable {
         $this->jam_id = $jam_id;
     }
 
-    public function getValidationToken() {
-        return $this->validation_token;
+    public function getEmailToken() {
+        return $this->email_token;
     }
 
-    public function setValidationToken($validation_token) {
-        $this->validation_token = $validation_token;
+    public function setEmailToken($email_token) {
+        $this->email_token = $email_token;
+    }
+
+    public function getPasswordToken() {
+        return $this->password_token;
+    }
+
+    public function setPasswordToken($password_token) {
+        $this->password_token = $password_token;
     }
 }

@@ -18,7 +18,7 @@ use PitouFW\Entity\ConsoleUser;
         /** @var ConsoleUser $user */ ?>
         <tr>
             <td><?= $user->getId() ?></td>
-            <td><?= $user->getFullname() ?></td>
+            <td><?= $user->getFirstname() . ' ' . $user->getLastname() ?></td>
             <td><a href="mailto:<?= $user->getEmail() ?>"><?= $user->getEmail() ?></a></td>
             <td>
                 <a href="<?= WEBROOT ?>console/users/details/<?= $user->getId() ?>" class="btn btn-outline-primary">

@@ -14,9 +14,13 @@ switch (Request::get()->getArg(2)) {
             $user = Persist::read('ConsoleUser', Request::get()->getArg(3));
 
             if (POST) {
-                if ($_POST['fullname'] !== '') {
-                    $user->setFullname($_POST['fullname']);
+                if ($_POST['firstname'] !== '') {
+                    $user->setFirstname($_POST['firstname']);
                     Alert::success('Changes saved successfully.');
+                }
+
+                if ($_POST['lastname'] !== '') {
+                    $user->setLastname($_POST['lastname']);
                 }
 
                 if ($_POST['email'] !== '' && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
