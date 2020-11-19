@@ -10,6 +10,8 @@ use PitouFW\Entity\ConsoleInvitation;
             <th>E-Mail address</th>
             <th>organization</th>
             <th>Role</th>
+            <th>Created at</th>
+            <th>Used</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -29,11 +31,15 @@ use PitouFW\Entity\ConsoleInvitation;
                 <span class="badge badge-primary">Member</span>
                 <?php endif ?>
             </td>
+            <td><?= $invitation->getCreatedAt() ?></td>
+            <td><?= $invitation->getUsedAt() ?? 'No' ?></td>
             <td>
+                <?php if ($invitation->getUsedAt() === null): ?>
                 <a href="<?= WEBROOT ?>console/invitations/revoke/<?= $invitation->getId() ?>" class="btn btn-outline-danger" onclick="return confirm('Are you sure?')">
                     <i class="fas fa-trash-alt"></i>
                     Revoke
                 </a>
+                <?php endif ?>
             </td>
         </tr>
     <?php endforeach ?>
