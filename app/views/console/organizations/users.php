@@ -32,9 +32,17 @@ use PitouFW\Entity\ConsoleUser;
                 <?php endif ?>
             </td>
             <td>
-                <a href="<?= WEBROOT ?>console/users/details/<?= $organization_user->getId() ?>" class="btn btn-outline-primary">
+                <a href="<?= WEBROOT ?>console/users/details/<?= $organization_user->user->getId() ?>" class="btn btn-outline-primary">
                     <i class="fas fa-edit"></i>
                     Details
+                </a>
+                <a href="<?= WEBROOT ?>console/users/apps/<?= $organization_user->user->getId() ?>" class="btn btn-outline-success">
+                    <i class="fab fa-app-store"></i>
+                    Apps
+                </a>
+                <a href="<?= WEBROOT ?>console/users/organizations/<?= $organization_user->user->getId() ?>" class="btn btn-outline-info">
+                    <i class="fas fa-users"></i>
+                    Organizations
                 </a>
                 <?php if ($organization_user->getRole() != 999): ?>
                 <a href="<?= WEBROOT ?>console/organizations/delete_user/<?= $organization_user->getId() ?>" class="btn btn-outline-danger" onclick="return confirm('Are you sure?')">

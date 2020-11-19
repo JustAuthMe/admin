@@ -32,7 +32,7 @@ use PitouFW\Entity\ConsoleOrganization;
                 </a>
                 <a href="<?= WEBROOT ?>console/organizations/users/<?= $organization->getId() ?>" class="btn btn-outline-info">
                     <i class="fas fa-users"></i>
-                    Members
+                    Users
                 </a>
             </td>
         </tr>

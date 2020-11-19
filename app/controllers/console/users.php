@@ -53,6 +53,41 @@ switch (Request::get()->getArg(2)) {
         }
         break;
 
+    case 'apps':
+        if (Persist::exists('ConsoleUser', 'id', Request::get()->getArg(3))) {
+            /** @var ConsoleUser $user */
+            $user = Persist::read('ConsoleUser', Request::get()->getArg(3));
+
+            $user_apps = Persist::fetchAll('ConsoleApp', "WHERE user_id = ?", [$user->getId()]);
+            $apps = [];
+            foreach ($user_apps as $user_app) {
+                $apps[] = clone $user_app->client_app;
+            }
+
+            Data::get()->add('TITLE', 'Console user #' . $user->getId() . ' apps');
+            Data::get()->add('apps', $apps);
+            Controller::renderView('core/apps/list');
+        } else {
+            header('location: ' . WEBROOT . 'console/users');
+            die;
+        }
+        break;
+
+    case 'organizations':
+        if (Persist::exists('ConsoleUser', 'id', Request::get()->getArg(3))) {
+            /** @var ConsoleUser $user */
+            $user = Persist::read('ConsoleUser', Request::get()->getArg(3));
+            $user_organizations = Persist::fetchAll('ConsoleOrganizationUser', "WHERE user_id = ?", [$user->getId()]);
+
+            Data::get()->add('TITLE', 'Console user #' . $user->getId() . ' organizations memberships');
+            Data::get()->add('user_organizations', $user_organizations);
+            Controller::renderView('console/users/organizations');
+        } else {
+            header('location: ' . WEBROOT . 'console/users');
+            die;
+        }
+        break;
+
     case 'delete':
         if (Persist::exists('ConsoleUser', 'id', Request::get()->getArg(3))) {
             Persist::deleteById('ConsoleUser', Request::get()->getArg(3));

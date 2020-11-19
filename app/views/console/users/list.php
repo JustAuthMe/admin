@@ -25,6 +25,14 @@ use PitouFW\Entity\ConsoleUser;
                     <i class="fas fa-edit"></i>
                     Details
                 </a>
+                <a href="<?= WEBROOT ?>console/users/apps/<?= $user->getId() ?>" class="btn btn-outline-success">
+                    <i class="fab fa-app-store"></i>
+                    Apps
+                </a>
+                <a href="<?= WEBROOT ?>console/users/organizations/<?= $user->getId() ?>" class="btn btn-outline-info">
+                    <i class="fas fa-users"></i>
+                    Organizations
+                </a>
             </td>
         </tr>
     <?php endforeach ?>
