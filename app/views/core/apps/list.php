@@ -30,7 +30,11 @@ use PitouFW\Entity\CoreClientApp;
             <td><?= !empty($app->owner) && gettype($app->owner) === 'object' ?
                     (get_class($app->owner) === 'PitouFW\Entity\ConsoleOrganization' ?
                         '<a href="' . WEBROOT . 'console/organizations/details/' . $app->owner->getId() . '"><i class="fas fa-building"></i> ' . $app->owner->getName() . '</a>' :
-                        '<a href="' . WEBROOT . 'console/users/details/' . $app->owner->getId() . '"><i class="fas fa-user"></i> ' . $app->owner->getFirstname() . ' ' . $app->owner->getLastname() . '</a>'
+                        '<a href="' . WEBROOT . 'console/users/details/' . $app->owner->getId() . '"><i class="fas fa-user"></i> ' . (
+                            !empty($app->owner->getFirstname()) ?
+                                $app->owner->getFirstname() . ' ' . $app->owner->getLastname() . '</a>' :
+                                $app->owner->getEmail()
+                        )
                     ) : '-' ?></td>
             <td>
                 <span class="badge badge-<?= $app->isDev() ? 'warning' : 'success' ?>">
