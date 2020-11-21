@@ -60,8 +60,11 @@ switch (Request::get()->getArg(2)) {
 
             $user_apps = Persist::fetchAll('ConsoleApp', "WHERE user_id = ?", [$user->getId()]);
             $apps = [];
-            foreach ($user_apps as $user_app) {
-                $apps[] = clone $user_app->client_app;
+            foreach ($user_apps as $k => $user_app) {
+                $apps[$k] = clone $user_app->client_app;
+                $apps[$k]->owner = $user_app->getOrganizationId() ?
+                    Persist::read('ConsoleOrganization', $user_app->getOrganizationId()) :
+                    Persist::read('ConsoleUser', $user_app->getUserId());
             }
 
             Data::get()->add('TITLE', 'Console user #' . $user->getId() . ' apps');

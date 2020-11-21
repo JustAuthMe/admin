@@ -6,6 +6,7 @@ use PitouFW\Core\Data;
 use PitouFW\Core\Persist;
 use PitouFW\Core\Request;
 use PitouFW\Core\Utils;
+use PitouFW\Entity\ConsoleApp;
 use PitouFW\Entity\ConsoleOrganization;
 use PitouFW\Entity\CoreClientApp;
 use PitouFW\Model\CoreClientApp as CoreClientAppModel;
@@ -138,7 +139,19 @@ switch (Request::get()->getArg(2)) {
         die;
 
     default:
+        $apps = Persist::fetchAll('CoreClientApp', "ORDER BY id DESC");
+        foreach ($apps as $k => $app) {
+            /** @var CoreClientApp $app */
+            if (Persist::exists('ConsoleApp', 'remote_resource_id', $app->getId())) {
+                /** @var ConsoleApp $console_app */
+                $console_app = Persist::readBy('ConsoleApp', 'remote_resource_id', $app->getId());
+                $apps[$k]->owner = $console_app->getOrganizationId() ?
+                    Persist::read('ConsoleOrganization', $console_app->getOrganizationId()) :
+                    Persist::read('ConsoleUser', $console_app->getUserId());
+            }
+        }
+
         Data::get()->add('TITLE', 'Client apps');
-        Data::get()->add('apps', Persist::fetchAll('CoreClientApp', "ORDER BY id DESC"));
+        Data::get()->add('apps', $apps);
         Controller::renderView('core/apps/list');
 }

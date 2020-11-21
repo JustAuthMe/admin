@@ -9,6 +9,7 @@ use PitouFW\Entity\ConsoleUser;
             <th>#</th>
             <th>Full name</th>
             <th>E-Mail address</th>
+            <th>Registered at</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -20,6 +21,7 @@ use PitouFW\Entity\ConsoleUser;
             <td><?= $user->getId() ?></td>
             <td><?= $user->getFirstname() . ' ' . $user->getLastname() ?></td>
             <td><a href="mailto:<?= $user->getEmail() ?>"><?= $user->getEmail() ?></a></td>
+            <td><?= $user->getCreatedAt() ?></td>
             <td>
                 <a href="<?= WEBROOT ?>console/users/details/<?= $user->getId() ?>" class="btn btn-outline-primary">
                     <i class="fas fa-edit"></i>

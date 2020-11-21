@@ -5,6 +5,7 @@ use PitouFW\Core\Controller;
 use PitouFW\Core\Data;
 use PitouFW\Core\Persist;
 use PitouFW\Core\Request;
+use PitouFW\Entity\ConsoleApp;
 use PitouFW\Entity\ConsoleOrganization;
 use PitouFW\Entity\ConsoleOrganizationApp;
 use PitouFW\Entity\ConsoleOrganizationUser;
@@ -40,8 +41,13 @@ switch (Request::get()->getArg(2)) {
 
             $organization_apps = Persist::fetchAll('ConsoleApp', "WHERE organization_id = ?", [$organization->getId()]);
             $apps = [];
-            foreach ($organization_apps as $organization_app) {
-                $apps[] = clone $organization_app->client_app;
+
+            foreach ($organization_apps as $k => $organization_app) {
+                /** @var ConsoleApp $organization_app */
+                $apps[$k] = clone $organization_app->client_app;
+                $apps[$k]->owner = $organization_app->getOrganizationId() ?
+                    Persist::read('ConsoleOrganization', $organization_app->getOrganizationId()) :
+                    Persist::read('ConsoleUser', $organization_app->getUserId());
             }
 
             Data::get()->add('TITLE', $organization->getName() . ' organization apps');
