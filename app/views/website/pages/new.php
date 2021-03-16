@@ -1,3 +1,8 @@
+<?php
+
+use PitouFW\Entity\WebsitePage;
+
+?>
 <form action="" method="post" id="new">
     <div class="form-row">
         <div class="form-group col-md-6">
@@ -12,6 +17,22 @@
                 </div>
                 <input type="text" name="route" id="route" placeholder="some-nice-slug" required class="form-control" pattern="[a-z0-9-]+" value="<?= $_POST['route'] ?? '' ?>" />
             </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="lang">Lang:</label>
+            <input type="text" name="lang" id="lang" placeholder="The page language code: en, fr, es, it, etc." required class="form-control" value="<?= $_POST['lang'] ?? '' ?>" />
+        </div>
+        <div class="form-group col-md-6">
+            <label for="alternate_to">Alternate to:</label>
+            <select class="form-control" name="alternate_to" id="alternate_to">
+                <option value="">-- Choose one (optional) --</option>
+                <?php foreach ($pages as $page):
+                /** @var WebsitePage $page */ ?>
+                <option value="<?= $page->getId() ?>"><?= $page->getTitle() ?></option>
+                <?php endforeach ?>
+            </select>
         </div>
     </div>
     <div class="form-group">

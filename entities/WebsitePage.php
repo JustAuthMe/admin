@@ -10,6 +10,8 @@ use PitouFW\Core\Resourceable;
 
 class WebsitePage implements Resourceable {
     private $id;
+    private $lang;
+    private $alternate_to;
     private $title;
     private $route;
     private $content;
@@ -18,8 +20,23 @@ class WebsitePage implements Resourceable {
     private $updated_at;
     private $published;
 
-    public function __construct($id = 0, $title = '', $route = '', $content = '', $views = 0, $created_at = 0, $updated_at = 0, $published = 0) {
+    /**
+     * Page constructor.
+     * @param int $id
+     * @param string $lang
+     * @param int|null $alternate_to
+     * @param string $title
+     * @param string $route
+     * @param string $content
+     * @param int $views
+     * @param int $created_at
+     * @param int $updated_at
+     * @param int $published
+     */
+    public function __construct($id = 0, $lang = '', $alternate_to = null, $title = '', $route = '', $content = '', $views = 0, $created_at = 0, $updated_at = 0, $published = 0) {
         $this->id = $id;
+        $this->lang = $lang;
+        $this->alternate_to = $alternate_to;
         $this->title = $title;
         $this->route = $route;
         $this->content = $content;
@@ -43,6 +60,22 @@ class WebsitePage implements Resourceable {
 
     public function setId($id) {
         $this->id = $id;
+    }
+
+    public function getLang() {
+        return $this->lang;
+    }
+
+    public function setLang($lang) {
+        $this->lang = $lang;
+    }
+
+    public function getAlternateTo() {
+        return $this->alternate_to;
+    }
+
+    public function setAlternateTo($alternate_to) {
+        $this->alternate_to = $alternate_to;
     }
 
     public function getTitle() {

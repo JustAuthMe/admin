@@ -11,11 +11,13 @@ use PitouFW\Entity\WebsitePage;
 switch (Request::get()->getArg(2)) {
     case 'new':
         if (POST) {
-            if ($_POST['title'] !== '' && $_POST['route'] !== '' && $_POST['content'] !== '') {
+            if ($_POST['title'] !== '' && $_POST['lang'] !== '' && $_POST['route'] !== '' && $_POST['content'] !== '') {
                 if (preg_match("#^[a-z0-9-]+$#", $_POST['route'])) {
                     if (!Persist::exists('WebsitePage', 'route', $_POST['route'])) {
                         $page = new WebsitePage(
                             0,
+                            $_POST['lang'],
+                            $_POST['alternate_to'] !== '' ? $_POST['alternate_to'] : null,
                             $_POST['title'],
                             $_POST['route'],
                             $_POST['content'],
@@ -24,6 +26,7 @@ switch (Request::get()->getArg(2)) {
                             Utils::time(),
                             isset($_GET['publish']) ? 1 : 0
                         );
+
                         Persist::create($page);
                         Alert::success('Website page successfully ' . (isset($_GET['publish']) ? 'published' : 'created') . '!');
                         header('location: ' . WEBROOT . 'website/pages');
@@ -40,6 +43,7 @@ switch (Request::get()->getArg(2)) {
         }
 
         Data::get()->add('TITLE', 'Add a new website page');
+        Data::get()->add('pages', Persist::fetchAll('WebsitePage', "WHERE lang='en'"));
         Controller::renderView('website/pages/new');
         break;
 
@@ -49,8 +53,10 @@ switch (Request::get()->getArg(2)) {
             $page = Persist::read('WebsitePage', Request::get()->getArg(3));
 
             if (POST) {
-                if ($_POST['title'] !== '' && $_POST['route'] !== '' && $_POST['content'] !== '') {
+                if ($_POST['title'] !== '' && $_POST['lang'] !== '' && $_POST['route'] !== '' && $_POST['content'] !== '') {
                     $page->setTitle($_POST['title']);
+                    $page->setLang($_POST['lang']);
+                    $page->setAlternateTo($_POST['alternate_to'] !== '' ? $_POST['alternate_to'] : null);
                     $page->setContent($_POST['content']);
                     $page->setUpdatedAt(Utils::time());
                     Alert::success('Changes saved successfully.');
@@ -59,10 +65,10 @@ switch (Request::get()->getArg(2)) {
                             if (!Persist::exists('WebsitePage', 'route', $_POST['route'])) {
                                 $page->setRoute($_POST['route']);
                             } else {
-                                Alert::error('A page with this URL already exists.');
+                                Alert::warning('A page with this URL already exists.');
                             }
                         } else {
-                            Alert::error('Invalid URL.');
+                            Alert::warning('Invalid URL.');
                         }
                     }
 
@@ -73,6 +79,7 @@ switch (Request::get()->getArg(2)) {
             }
 
             Data::get()->add('TITLE', 'Details of page #' . $page->getId() .': ' . $page->getTitle());
+            Data::get()->add('pages', Persist::fetchAll('WebsitePage', "WHERE lang='en'"));
             Data::get()->add('page', $page);
             Controller::renderView('website/pages/details');
         } else {

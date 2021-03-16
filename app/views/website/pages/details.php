@@ -37,6 +37,22 @@ if ($page->isPublished()):
             </div>
         </div>
     </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="lang">Lang:</label>
+            <input type="text" name="lang" id="lang" placeholder="The page language code: en, fr, es, it, etc." required class="form-control" value="<?= $page->getLang() ?>" />
+        </div>
+        <div class="form-group col-md-6">
+            <label for="alternate_to">Alternate to:</label>
+            <select class="form-control" name="alternate_to" id="alternate_to">
+                <option value="">-- Choose one (optional) --</option>
+                <?php foreach ($pages as $page2):
+                    /** @var WebsitePage $page2 */ ?>
+                    <option value="<?= $page2->getId() ?>" <?= $page->getAlternateTo() === $page2->getId() ? 'selected' : '' ?>><?= $page2->getTitle() ?></option>
+                <?php endforeach ?>
+            </select>
+        </div>
+    </div>
     <div class="form-group">
         <label for="content">Content:</label>
         <textarea rows="25" name="content" id="content" required class="form-control"><?= $page->getContent() ?></textarea>
