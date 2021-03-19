@@ -8,6 +8,7 @@ use PitouFW\Entity\CoreCustomer;
         <tr>
             <th>#</th>
             <th>E-mail address</th>
+            <th>Language</th>
             <th>Subscribed at</th>
             <th>IP address</th>
             <th>Actions</th>
@@ -19,6 +20,7 @@ use PitouFW\Entity\CoreCustomer;
         <tr>
             <td><?= $subscriber->getId() ?></td>
             <td><a href="mailto:<?= $subscriber->getEmail() ?>"><?= $subscriber->getEmail() ?></a></td>
+            <td><?= $subscriber->getLang() ?></td>
             <td><?= date('Y-m-d H:i:s', $subscriber->getTimestamp()) ?></td>
             <td><?= $subscriber->getIpAddress() ?></td>
             <td>
